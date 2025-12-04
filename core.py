@@ -110,7 +110,7 @@ def get_preset_path(preset_id):
 
 def enumerate_subdomains(domain, wordlist_path=None, preset_id="1", 
                         passive=False, timeout=5.0, threads=30, 
-                        progress_callback=None):
+                        progress_callback=None, subdomain_callback=None):
     """
     Main subdomain enumeration function
     
@@ -121,7 +121,8 @@ def enumerate_subdomains(domain, wordlist_path=None, preset_id="1",
         passive: Enable passive enumeration via crt.sh
         timeout: DNS timeout in seconds
         threads: Number of concurrent threads
-        progress_callback: Optional callback function for progress updates
+        progress_callback: Optional callback function for progress updates (percentage, completed, total)
+        subdomain_callback: Optional callback function called when a subdomain is discovered
         
     Returns:
         Dict with results: {
@@ -159,11 +160,12 @@ def enumerate_subdomains(domain, wordlist_path=None, preset_id="1",
                     extracted.append(prefix)
         prefixes = list(set(prefixes + extracted))
     
-    if progress_callback:
-        progress_callback(f"Scanning {len(prefixes)} prefixes...")
+    total_prefixes = len(prefixes)
     
     # Active enumeration
     results = []
+    completed = 0
+    last_reported_percentage = -5  # Track last reported percentage to send every 5%
     start = time.time()
     
     with concurrent.futures.ThreadPoolExecutor(max_workers=threads) as ex:
@@ -174,10 +176,21 @@ def enumerate_subdomains(domain, wordlist_path=None, preset_id="1",
             except:
                 res = None
             
+            completed += 1
+            
+            # Send progress update every 5% or at completion
+            if progress_callback:
+                percentage = (completed / total_prefixes) * 100
+                # Send if we've crossed a 5% threshold or reached 100%
+                if percentage >= last_reported_percentage + 5 or percentage == 100:
+                    progress_callback(percentage, completed, total_prefixes)
+                    last_reported_percentage = percentage
+            
+            # Send subdomain discovery update
             if res:
                 results.append(res)
-                if progress_callback:
-                    progress_callback(f"Found: {res['host']}")
+                if subdomain_callback:
+                    subdomain_callback(res)
     
     elapsed = time.time() - start
     
