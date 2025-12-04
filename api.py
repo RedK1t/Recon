@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 # api.py - FastAPI application for subdomain enumeration
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 from typing import List, Optional
 import core
+import json
+import asyncio
 
 app = FastAPI(
     title="Subdomain Enumerator API",
@@ -144,6 +146,151 @@ async def enumerate(request: EnumerateRequest):
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Enumeration failed: {str(e)}")
+
+
+@app.websocket("/ws/enumerate")
+async def websocket_enumerate(websocket: WebSocket):
+    """
+    WebSocket endpoint for real-time subdomain enumeration
+    
+    Accepts JSON with enumeration parameters and streams results:
+    - Progress updates with percentage completion
+    - Discovered subdomains in real-time
+    - Completion message with total count and elapsed time
+    
+    Message format:
+    Input: {"domain": "example.com", "wordlist_preset": "1", "passive": false, "timeout": 5.0, "threads": 30}
+    
+    Output messages:
+    - Progress: {"type": "progress", "percentage": 45.5, "completed": 455, "total": 1000}
+    - Subdomain: {"type": "subdomain", "host": "api.example.com", "ips": ["192.168.1.1"]}
+    - Complete: {"type": "complete", "count": 25, "elapsed_time": 12.5}
+    - Error: {"type": "error", "message": "Error description"}
+    """
+    await websocket.accept()
+    
+    try:
+        # Receive enumeration parameters
+        data = await websocket.receive_text()
+        params = json.loads(data)
+        
+        domain = params.get("domain")
+        if not domain:
+            await websocket.send_json({
+                "type": "error",
+                "message": "Domain is required"
+            })
+            await websocket.close()
+            return
+        
+        wordlist_preset = params.get("wordlist_preset", "1")
+        custom_wordlist = params.get("custom_wordlist")
+        passive = params.get("passive", False)
+        timeout = params.get("timeout", 5.0)
+        threads = params.get("threads", 30)
+        
+        # Create a thread-safe queue for real-time message streaming
+        message_queue = asyncio.Queue()
+        enumeration_complete = asyncio.Event()
+        
+        # Run enumeration in a thread pool
+        def run_enumeration():
+            def sync_progress_callback(percentage, completed, total):
+                # Put message in queue for async sending
+                asyncio.run_coroutine_threadsafe(
+                    message_queue.put({
+                        "type": "progress",
+                        "percentage": round(percentage, 2),
+                        "completed": completed,
+                        "total": total
+                    }),
+                    loop
+                )
+            
+            def sync_subdomain_callback(result):
+                # Put message in queue for async sending
+                asyncio.run_coroutine_threadsafe(
+                    message_queue.put({
+                        "type": "subdomain",
+                        "host": result["host"],
+                        "ips": result["ips"]
+                    }),
+                    loop
+                )
+            
+            try:
+                result = core.enumerate_subdomains(
+                    domain=domain,
+                    wordlist_path=custom_wordlist,
+                    preset_id=wordlist_preset,
+                    passive=passive,
+                    timeout=timeout,
+                    threads=threads,
+                    progress_callback=sync_progress_callback,
+                    subdomain_callback=sync_subdomain_callback
+                )
+                
+                # Signal completion
+                asyncio.run_coroutine_threadsafe(
+                    message_queue.put({
+                        "type": "complete",
+                        "count": result["count"],
+                        "elapsed_time": round(result["elapsed_time"], 2)
+                    }),
+                    loop
+                )
+            except Exception as e:
+                asyncio.run_coroutine_threadsafe(
+                    message_queue.put({
+                        "type": "error",
+                        "message": str(e)
+                    }),
+                    loop
+                )
+            finally:
+                asyncio.run_coroutine_threadsafe(enumeration_complete.set(), loop)
+        
+        # Start enumeration in background thread
+        loop = asyncio.get_event_loop()
+        loop.run_in_executor(None, run_enumeration)
+        
+        # Stream messages in real-time as they arrive
+        while not enumeration_complete.is_set() or not message_queue.empty():
+            try:
+                # Wait for message with timeout to check completion status
+                message = await asyncio.wait_for(message_queue.get(), timeout=0.1)
+                await websocket.send_json(message)
+                
+                # Break if this was the completion or error message
+                if message["type"] in ["complete", "error"]:
+                    break
+            except asyncio.TimeoutError:
+                # No message available, continue waiting
+                continue
+        
+    except WebSocketDisconnect:
+        pass
+    except json.JSONDecodeError:
+        try:
+            await websocket.send_json({
+                "type": "error",
+                "message": "Invalid JSON format"
+            })
+        except:
+            pass
+    except Exception as e:
+        try:
+            await websocket.send_json({
+                "type": "error",
+                "message": str(e)
+            })
+        except:
+            pass
+    finally:
+        try:
+            await websocket.close()
+        except:
+            pass
 
 
 @app.get("/health")
