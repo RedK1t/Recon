@@ -1,0 +1,14 @@
+[
+    {
+        "target": "www.facebook.com",
+        "error": "Wrong type for [host], should be a string [was <class 'int'>]"
+    },
+    {
+        "target": "www2.facebook.com",
+        "error": "Wrong type for [host], should be a string [was <class 'int'>]"
+    },
+    {
+        "target": "intern.facebook.com",
+        "error": "Wrong type for [host], should be a string [was <class 'int'>]"
+    }
+]

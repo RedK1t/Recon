@@ -370,3 +370,10 @@ Error responses include a `detail` field with the error message:
 ## License
 
 This project is provided as-is for educational and security research purposes.
+
+
+## This is for Joe
+
+```bash
+pip freeze > requirements.txt
+```
