@@ -589,7 +589,6 @@ pfn
 ns2
 ua
 iam
-unused
 orcon
 gw
 wsmr
@@ -745,7 +744,6 @@ abi
 stk
 chyn
 ord
-Net
 dk
 sjc
 millicom
@@ -859,7 +857,6 @@ zen
 upc
 brew
 wsc
-Cc
 chariot
 sxcy
 terra
@@ -1287,7 +1284,6 @@ reverse-not-set
 webmail
 tch
 athletics
-ResHall
 tw
 office
 nynyc-t
@@ -1359,7 +1355,6 @@ cpe-dynamic
 mys
 mcs
 ncv
-Cs
 phys
 ria
 mis
@@ -1380,7 +1375,6 @@ fm
 paisdn
 c200
 bamberg
-bc
 f
 stcd
 oshkwi
@@ -1497,9 +1491,7 @@ range213-121
 linkexpress
 sconosciuto
 metrotel
-Pc
 houston
-Be
 urbi
 hospital
 mh
@@ -1838,7 +1830,6 @@ static-customer
 systems
 ch1
 tor2
-iTS
 lvld
 bme
 arnet
@@ -2174,7 +2165,6 @@ ha
 flc
 mxu
 chicail
-staticip
 atl1
 ibw
 sag
@@ -2333,7 +2323,6 @@ dyndsl
 lhr
 mail4
 host14
-AR
 sia
 shands
 telcom
@@ -2793,7 +2782,6 @@ netvu
 irv
 host57
 vetorialnet
-St
 lists
 dist
 ve
@@ -2959,7 +2947,6 @@ host205
 uservices
 ham
 procergs
-maiL
 s1
 sanfrca
 oklyca
@@ -3086,7 +3073,6 @@ coonvalley
 host242
 host227
 ansoc
-mE
 host115
 res-wb3
 dcres
@@ -3226,7 +3212,6 @@ aset
 faster
 host68
 abington
-Dynamic
 cybernet
 host63
 crossfone
@@ -3335,7 +3320,6 @@ easynet
 dorms
 steel
 cedar-res-net
-ACC
 0xffffffe0
 msd
 dsl-oc3
@@ -3365,7 +3349,6 @@ host210
 nk
 host192
 mdmmi
-andrew
 sme
 ehs
 netequip
@@ -3461,7 +3444,6 @@ layl001
 sttl
 mail6
 myhgoh
-Gw
 yw
 pop-koblenz
 iro
@@ -4130,7 +4112,6 @@ fsus
 cvx-1
 silver-lea
 klafu
-HPC
 24mbps
 malmo
 afrc
@@ -4234,7 +4215,6 @@ dfw9
 apps
 hq-san
 dept-med
-ai
 sfldmi02
 itslabs
 jefferson
@@ -4263,7 +4243,6 @@ capitol-res-net
 wlan-zone1
 def-rev
 aviation
-iS
 mx01
 csonline-dynamic-dialup
 eth-wifi
@@ -4275,7 +4254,6 @@ salem
 ripe
 dorm3-wireless
 ccit
-AC
 TEPPER
 gbg
 ber
@@ -4329,7 +4307,6 @@ router-via-ctc
 perfigo
 network-via-ctc
 p1
-CNS
 www6
 sphtm
 pop-df
@@ -4457,7 +4434,6 @@ ams2
 ens
 dce
 grg
-Dialup
 roosevelt
 bras
 mail10
@@ -4659,7 +4635,6 @@ router1
 irt
 gb
 campuslife
-WiFi
 duesseldorf
 w2
 sea4
@@ -4683,7 +4658,6 @@ snjp
 moc
 mmtl
 bg1
-SA
 omdx14ec
 mag
 cas-gue
@@ -4804,7 +4778,6 @@ bizdsl
 server4
 inetclub
 bh
-SAS
 orml012
 frankfurt
 cmi
@@ -4920,7 +4893,6 @@ fcfar
 chorus
 aits
 lu
-Fi
 atl5
 wce
 suoe
@@ -5150,7 +5122,6 @@ srfrct
 rocny
 perth
 obgyn
-ist
 ilc
 fanda
 coub
@@ -5519,7 +5490,6 @@ syd001
 special
 pmb
 plugon
-NYC1
 heron
 fp
 bo3
@@ -5621,7 +5591,6 @@ indigopool
 cn2
 hollola
 college
-BOS
 pk
 hhl
 dsl1
@@ -5644,10 +5613,8 @@ avpc
 lodz
 keck
 csw
-Ash
 127-static
 spare
-NewYork
 fg
 dialup4
 te
@@ -5817,7 +5784,6 @@ any
 ibest
 cio
 macau
-chi1
 vanc
 net191
 net149
@@ -5949,7 +5915,6 @@ ahsc
 workstations
 swan
 rrhec
-Nsk
 mmm
 lns1
 lga
@@ -6370,7 +6335,6 @@ cne
 tus
 tiradito
 tho114
-SFO1
 net-173
 liblab
 finon
@@ -6485,7 +6449,6 @@ bkj71
 barksdale
 ares
 ame
-AD
 zimbra
 stjsmiso
 oir
@@ -6583,7 +6546,6 @@ cambma1-dc1
 btb
 56kdialup
 work
-Ns2
 nr
 npl
 hsclib
@@ -6726,7 +6688,6 @@ geosc
 dts
 den01
 162-static
-PHX2
 main2
 hera
 elk
@@ -6802,7 +6763,6 @@ chcg
 camera
 auxserv
 api
-Ah
 252-static
 207-182-62-NET
 wrls
@@ -6838,7 +6798,6 @@ cabletv
 ptp
 primate
 nrc
-K12
 hflab
 han
 files
@@ -6950,7 +6909,6 @@ structbio
 oig
 kyiv
 iwc
-INS
 idfrld
 apl2
 233-static
@@ -7135,7 +7093,6 @@ esue
 epsilon
 dosa
 CPES
-ARC
 wh2
 rmc
 kad1
@@ -7355,7 +7312,6 @@ agoura
 zeta
 vaer
 spectrum
-SIN1
 sidney
 net194
 mgdwks
@@ -7558,7 +7514,6 @@ u11
 TWTC175
 register
 postoffice
-Ip
 iad5
 hec
 frientx
@@ -7740,7 +7695,6 @@ kcnet
 fsip
 fasternet
 elpa
-DH
 d4m
 wri
 watson
@@ -7902,7 +7856,6 @@ beale
 audit
 ws13
 ucbso
-Ns1
 mx25
 lancaster
 genomecenter
@@ -8265,7 +8218,6 @@ ip25
 ip188
 ip117
 indexsol
-IE
 ers
 csesp
 cni
@@ -8333,7 +8285,6 @@ hudson
 eagles
 cast
 argon
-AMS1
 087
 070
 043
@@ -9360,7 +9311,6 @@ pool21
 pls
 pfvl
 pc8
-NYC3
 NY325-EDGE-RTR5
 net64
 mks
@@ -9443,7 +9393,6 @@ pool17
 physpl
 muc2
 madrid
-LosAngeles
 lacnic
 jcy1
 ip241
@@ -27300,7 +27249,6 @@ sub-166-144-77
 sub-166-144-5
 sub-166-144-255
 sub-166-140-148
-stuaff
 stc-3
 stc-1
 sn248
@@ -27968,7 +27916,6 @@ ess-vellore
 es-et
 eastfowl2
 eastfowl1
-Cp
 clubmrdn
 cc7221243
 cc7221233
@@ -28841,7 +28788,6 @@ nut
 natblock
 nanet
 mathlab
-M3
 libp
 LA1
 kasprzaka
@@ -29132,7 +29078,6 @@ adsl-ge
 209-113-170
 wfci
 usda-ars
-Unassigned
 tbh1
 sub-97-61-36
 sub-97-57-7
@@ -29347,7 +29292,6 @@ sub-166-144-114
 sub-166-144-103
 stadium
 sql2
-SoE
 sga
 seg181
 seg177
@@ -30058,7 +30002,6 @@ sonic
 snpn
 seg220
 rznet
-PHX1
 nti
 net195-72-173
 nemesis
@@ -31834,7 +31777,6 @@ host-151
 host-126
 host-123
 gly
-GI
 fs1
 facstaff
 ese
@@ -32074,7 +32016,6 @@ static143
 smtp11
 sgm-south
 server8
-S11
 ReservedStatic-9
 pic
 parrish-dorm03
@@ -32086,7 +32027,6 @@ no2
 mckale
 mary-lyon01
 mail30
-la1
 ip168-54-216
 host-240
 host-214
@@ -32596,7 +32536,6 @@ engine
 draco
 cydc-brt
 cybercity
-CAL1
 angel
 56-13-195
 254-106-194-rev
@@ -33998,7 +33937,6 @@ static26
 static21
 static126
 static102
-SH
 sco1
 sanclca
 s188
@@ -35045,7 +34983,6 @@ ersk
 dorms6
 dorms5
 digilab
-cpes
 choconut
 castor
 buh
@@ -35367,7 +35304,6 @@ host-183
 host-164
 host-100
 genoohxa
-EHS
 dofm
 dha
 dewnet
@@ -38458,7 +38394,6 @@ sub-166-140-241
 sub-166-139-25
 station74k
 silicon
-ResLife
 psii
 plugnet
 pc231
@@ -39082,7 +39017,6 @@ japan
 host-176
 hilldmnp
 hgen
-HC
 esci
 dawson
 dathanet
@@ -40648,8 +40582,6 @@ pc208
 pc207
 pc146
 oerd
-NYC2
-NotUsed
 ncchrl
 navsisa
 natsci
@@ -41427,7 +41359,6 @@ mx143
 mx142
 mx122
 mtmgpqxqas02
-Mh
 matnpqxqas06
 learning
 k2
@@ -47786,7 +47717,6 @@ onton
 olympus
 netrange-125
 netmon
-NBG1
 mx96
 mx79
 mx250
@@ -49132,14 +49062,12 @@ mx139
 msr1-nyd
 msr
 mmto
-MathCS
 maple
 luke
 kansamo
 htrvpqxqas04
 gle
 dom
-Dns
 direct-36-24
 cvrd
 cornenc
