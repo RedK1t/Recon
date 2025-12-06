@@ -106,7 +106,7 @@
   },
   {
     "subdomain": "login.facebook.com",
-    "url": "https://login.facebook.com",
+    "url": "http://login.facebook.com",
     "status": 200
   },
   {
@@ -131,17 +131,17 @@
   },
   {
     "subdomain": "de.facebook.com",
-    "url": "https://de.facebook.com",
+    "url": "http://de.facebook.com",
     "status": 200
   },
   {
     "subdomain": "cs.facebook.com",
-    "url": "https://cs.facebook.com",
+    "url": "http://cs.facebook.com",
     "status": 200
   },
   {
     "subdomain": "ww.facebook.com",
-    "url": "https://ww.facebook.com",
+    "url": "http://ww.facebook.com",
     "status": 200
   },
   {
@@ -171,12 +171,17 @@
   },
   {
     "subdomain": "w.facebook.com",
-    "url": "https://w.facebook.com",
+    "url": "http://w.facebook.com",
     "status": 200
   },
   {
     "subdomain": "tools.facebook.com",
-    "url": "https://tools.facebook.com",
+    "url": "http://tools.facebook.com",
+    "status": 200
+  },
+  {
+    "subdomain": "iphone.facebook.com",
+    "url": "http://iphone.facebook.com",
     "status": 200
   },
   {
@@ -191,22 +196,32 @@
   },
   {
     "subdomain": "job.facebook.com",
-    "url": "https://job.facebook.com",
+    "url": "http://job.facebook.com",
     "status": 200
   },
   {
     "subdomain": "sandbox.facebook.com",
-    "url": "https://sandbox.facebook.com",
+    "url": "http://sandbox.facebook.com",
     "status": 200
   },
   {
     "subdomain": "fb.facebook.com",
-    "url": "https://fb.facebook.com",
+    "url": "http://fb.facebook.com",
     "status": 200
   },
   {
     "subdomain": "partners.facebook.com",
-    "url": "https://partners.facebook.com",
+    "url": "http://partners.facebook.com",
+    "status": 200
+  },
+  {
+    "subdomain": "ca.facebook.com",
+    "url": "http://ca.facebook.com",
+    "status": 200
+  },
+  {
+    "subdomain": "pay.facebook.com",
+    "url": "http://pay.facebook.com",
     "status": 200
   },
   {
@@ -216,12 +231,12 @@
   },
   {
     "subdomain": "alpha.facebook.com",
-    "url": "https://alpha.facebook.com",
+    "url": "http://alpha.facebook.com",
     "status": 200
   },
   {
     "subdomain": "trac.facebook.com",
-    "url": "https://trac.facebook.com",
+    "url": "http://trac.facebook.com",
     "status": 200
   },
   {
@@ -231,7 +246,7 @@
   },
   {
     "subdomain": "design.facebook.com",
-    "url": "https://design.facebook.com",
+    "url": "http://design.facebook.com",
     "status": 200
   },
   {
@@ -241,12 +256,12 @@
   },
   {
     "subdomain": "business.facebook.com",
-    "url": "https://business.facebook.com",
+    "url": "http://business.facebook.com",
     "status": 200
   },
   {
     "subdomain": "social.facebook.com",
-    "url": "https://social.facebook.com",
+    "url": "http://social.facebook.com",
     "status": 200
   },
   {
@@ -261,12 +276,12 @@
   },
   {
     "subdomain": "research.facebook.com",
-    "url": "https://research.facebook.com",
+    "url": "http://research.facebook.com",
     "status": 200
   },
   {
     "subdomain": "google.facebook.com",
-    "url": "https://google.facebook.com",
+    "url": "http://google.facebook.com",
     "status": 200
   },
   {
@@ -275,8 +290,13 @@
     "status": 200
   },
   {
+    "subdomain": "careers.facebook.com",
+    "url": "http://careers.facebook.com",
+    "status": 200
+  },
+  {
     "subdomain": "d.facebook.com",
-    "url": "https://d.facebook.com",
+    "url": "http://d.facebook.com",
     "status": 200
   },
   {
@@ -286,12 +306,12 @@
   },
   {
     "subdomain": "tech.facebook.com",
-    "url": "https://tech.facebook.com",
+    "url": "http://tech.facebook.com",
     "status": 200
   },
   {
     "subdomain": "free.facebook.com",
-    "url": "https://free.facebook.com",
+    "url": "http://free.facebook.com",
     "status": 200
   },
   {
@@ -301,7 +321,7 @@
   },
   {
     "subdomain": "register.facebook.com",
-    "url": "https://register.facebook.com",
+    "url": "http://register.facebook.com",
     "status": 200
   },
   {
@@ -311,12 +331,12 @@
   },
   {
     "subdomain": "work.facebook.com",
-    "url": "https://work.facebook.com",
+    "url": "http://work.facebook.com",
     "status": 200
   },
   {
     "subdomain": "p.facebook.com",
-    "url": "https://p.facebook.com",
+    "url": "http://p.facebook.com",
     "status": 200
   },
   {
@@ -326,12 +346,12 @@
   },
   {
     "subdomain": "tr.facebook.com",
-    "url": "https://tr.facebook.com",
+    "url": "http://tr.facebook.com",
     "status": 200
   },
   {
     "subdomain": "code.facebook.com",
-    "url": "https://code.facebook.com",
+    "url": "http://code.facebook.com",
     "status": 200
   },
   {
@@ -346,7 +366,7 @@
   },
   {
     "subdomain": "developer.facebook.com",
-    "url": "https://developer.facebook.com",
+    "url": "http://developer.facebook.com",
     "status": 200
   },
   {
@@ -356,27 +376,32 @@
   },
   {
     "subdomain": "x.facebook.com",
-    "url": "https://x.facebook.com",
+    "url": "http://x.facebook.com",
     "status": 200
   },
   {
     "subdomain": "mt.facebook.com",
-    "url": "https://mt.facebook.com",
+    "url": "http://mt.facebook.com",
     "status": 200
   },
   {
     "subdomain": "develop.facebook.com",
-    "url": "https://develop.facebook.com",
+    "url": "http://develop.facebook.com",
+    "status": 200
+  },
+  {
+    "subdomain": "people.facebook.com",
+    "url": "http://people.facebook.com",
     "status": 200
   },
   {
     "subdomain": "eu.facebook.com",
-    "url": "https://eu.facebook.com",
+    "url": "http://eu.facebook.com",
     "status": 200
   },
   {
     "subdomain": "prod.facebook.com",
-    "url": "https://prod.facebook.com",
+    "url": "http://prod.facebook.com",
     "status": 200
   },
   {
@@ -386,7 +411,7 @@
   },
   {
     "subdomain": "bt.facebook.com",
-    "url": "https://bt.facebook.com",
+    "url": "http://bt.facebook.com",
     "status": 200
   },
   {
@@ -396,7 +421,7 @@
   },
   {
     "subdomain": "star.facebook.com",
-    "url": "https://star.facebook.com",
+    "url": "http://star.facebook.com",
     "status": 200
   },
   {
@@ -406,7 +431,7 @@
   },
   {
     "subdomain": "booking.facebook.com",
-    "url": "https://booking.facebook.com",
+    "url": "http://booking.facebook.com",
     "status": 200
   },
   {
@@ -431,7 +456,7 @@
   },
   {
     "subdomain": "tc.facebook.com",
-    "url": "https://tc.facebook.com",
+    "url": "http://tc.facebook.com",
     "status": 200
   },
   {
@@ -441,12 +466,12 @@
   },
   {
     "subdomain": "payments.facebook.com",
-    "url": "https://payments.facebook.com",
+    "url": "http://payments.facebook.com",
     "status": 200
   },
   {
     "subdomain": "ro.facebook.com",
-    "url": "https://ro.facebook.com",
+    "url": "http://ro.facebook.com",
     "status": 200
   },
   {
@@ -466,7 +491,7 @@
   },
   {
     "subdomain": "tmp.facebook.com",
-    "url": "https://tmp.facebook.com",
+    "url": "http://tmp.facebook.com",
     "status": 200
   },
   {
@@ -476,12 +501,12 @@
   },
   {
     "subdomain": "gps.facebook.com",
-    "url": "https://gps.facebook.com",
+    "url": "http://gps.facebook.com",
     "status": 200
   },
   {
     "subdomain": "box.facebook.com",
-    "url": "https://box.facebook.com",
+    "url": "http://box.facebook.com",
     "status": 200
   },
   {
@@ -495,8 +520,13 @@
     "status": 200
   },
   {
+    "subdomain": "th.facebook.com",
+    "url": "http://th.facebook.com",
+    "status": 200
+  },
+  {
     "subdomain": "intern.facebook.com",
-    "url": "https://intern.facebook.com",
+    "url": "http://intern.facebook.com",
     "status": 200
   }
 ]
