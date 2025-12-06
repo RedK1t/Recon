@@ -40,9 +40,22 @@ class SubdomainResult(BaseModel):
     ips: List[str]
 
 
+class LiveWebService(BaseModel):
+    subdomain: str
+    url: str
+    status: int
+    ips: List[str]
+
+
+class DnsOnlyResult(BaseModel):
+    subdomain: str
+    ips: List[str]
+
+
 class EnumerateResponse(BaseModel):
     count: int
-    subdomains: List[SubdomainResult]
+    live_web_services: List[LiveWebService]
+    dns_only: List[DnsOnlyResult]
     elapsed_time: float
 
 
@@ -136,7 +149,8 @@ async def enumerate(request: EnumerateRequest):
         
         return {
             "count": result["count"],
-            "subdomains": result["subdomains"],
+            "live_web_services": result["live_web_services"],
+            "dns_only": result["dns_only"],
             "elapsed_time": result["elapsed_time"]
         }
     
@@ -163,7 +177,8 @@ async def websocket_enumerate(websocket: WebSocket):
     
     Output messages:
     - Progress: {"type": "progress", "percentage": 45.5, "completed": 455, "total": 1000}
-    - Subdomain: {"type": "subdomain", "host": "api.example.com", "ips": ["192.168.1.1"]}
+    - HTTP Validated: {"type": "http_validated", "subdomain": "api.example.com", "url": "https://api.example.com", "status": 200, "ips": ["192.168.1.1"]}
+    - DNS Only: {"type": "dns_only", "subdomain": "mail.example.com", "ips": ["192.168.1.2"]}
     - Complete: {"type": "complete", "count": 25, "elapsed_time": 12.5}
     - Error: {"type": "error", "message": "Error description"}
     """
@@ -207,14 +222,10 @@ async def websocket_enumerate(websocket: WebSocket):
                     loop
                 )
             
-            def sync_subdomain_callback(result):
-                # Put message in queue for async sending
+            def sync_http_validation_callback(result):
+                # Put HTTP validation message in queue
                 asyncio.run_coroutine_threadsafe(
-                    message_queue.put({
-                        "type": "subdomain",
-                        "host": result["host"],
-                        "ips": result["ips"]
-                    }),
+                    message_queue.put(result),
                     loop
                 )
             
@@ -227,7 +238,7 @@ async def websocket_enumerate(websocket: WebSocket):
                     timeout=timeout,
                     threads=threads,
                     progress_callback=sync_progress_callback,
-                    subdomain_callback=sync_subdomain_callback
+                    http_validation_callback=sync_http_validation_callback
                 )
                 
                 # Signal completion
@@ -248,7 +259,8 @@ async def websocket_enumerate(websocket: WebSocket):
                     loop
                 )
             finally:
-                asyncio.run_coroutine_threadsafe(enumeration_complete.set(), loop)
+                # Set the event directly (it's not a coroutine)
+                loop.call_soon_threadsafe(enumeration_complete.set)
         
         # Start enumeration in background thread
         loop = asyncio.get_event_loop()
