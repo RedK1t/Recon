@@ -6,6 +6,8 @@ import concurrent.futures
 import time
 import os
 import requests
+import asyncio
+import http_validator
 
 PRESET_NAMES = {
     "1": ("top1k", "top1k.txt"),
@@ -110,7 +112,8 @@ def get_preset_path(preset_id):
 
 def enumerate_subdomains(domain, wordlist_path=None, preset_id="1", 
                         passive=False, timeout=5.0, threads=30, 
-                        progress_callback=None, subdomain_callback=None):
+                        progress_callback=None, subdomain_callback=None,
+                        http_validation_callback=None):
     """
     Main subdomain enumeration function
     
@@ -123,6 +126,7 @@ def enumerate_subdomains(domain, wordlist_path=None, preset_id="1",
         threads: Number of concurrent threads
         progress_callback: Optional callback function for progress updates (percentage, completed, total)
         subdomain_callback: Optional callback function called when a subdomain is discovered
+        http_validation_callback: Optional callback function called when HTTP validation completes for a subdomain
         
     Returns:
         Dict with results: {
@@ -179,14 +183,15 @@ def enumerate_subdomains(domain, wordlist_path=None, preset_id="1",
             completed += 1
             
             # Send progress update every 5% or at completion
+            # DNS phase is 0-50% of total progress
             if progress_callback:
-                percentage = (completed / total_prefixes) * 100
-                # Send if we've crossed a 5% threshold or reached 100%
-                if percentage >= last_reported_percentage + 5 or percentage == 100:
-                    progress_callback(percentage, completed, total_prefixes)
-                    last_reported_percentage = percentage
+                dns_percentage = (completed / total_prefixes) * 50  # DNS is first 50%
+                # Send if we've crossed a 5% threshold
+                if dns_percentage >= last_reported_percentage + 5 or completed == total_prefixes:
+                    progress_callback(dns_percentage, completed, total_prefixes * 2)  # total * 2 for both phases
+                    last_reported_percentage = dns_percentage
             
-            # Send subdomain discovery update
+            # Collect results (no callback here anymore)
             if res:
                 results.append(res)
                 if subdomain_callback:
@@ -194,8 +199,24 @@ def enumerate_subdomains(domain, wordlist_path=None, preset_id="1",
     
     elapsed = time.time() - start
     
+    # Perform HTTP/HTTPS validation with progress tracking
+    # HTTP validation is 50-100% of total progress
+    def http_progress_wrapper(result):
+        # This gets called for each validated subdomain
+        if http_validation_callback:
+            http_validation_callback(result)
+    
+    validation_result = asyncio.run(
+        http_validator.validate_subdomains(
+            results, 
+            http_progress_wrapper,
+            progress_callback  # Pass progress callback for HTTP validation phase
+        )
+    )
+    
     return {
-        "subdomains": results,
+        "live_web_services": validation_result["live_web_services"],
+        "dns_only": validation_result["dns_only"],
         "count": len(results),
         "elapsed_time": elapsed
     }
