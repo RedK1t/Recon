@@ -1,14 +1,86 @@
-[
-    {
-        "target": "www.facebook.com",
-        "error": "Wrong type for [host], should be a string [was <class 'int'>]"
+{
+    "alt.aspxmx.1.google.com": {
+        "state": "down",
+        "ports": []
     },
-    {
-        "target": "www2.facebook.com",
-        "error": "Wrong type for [host], should be a string [was <class 'int'>]"
+    "client.1.google.com": {
+        "state": "down",
+        "ports": []
     },
-    {
-        "target": "intern.facebook.com",
-        "error": "Wrong type for [host], should be a string [was <class 'int'>]"
+    "clients.1.google.com": {
+        "state": "down",
+        "ports": []
+    },
+    "gmail-smtp-msa.1.google.com": {
+        "state": "down",
+        "ports": []
+    },
+    "scanme.nmap.org": {
+        "ip": "45.33.32.156",
+        "state": "up",
+        "ports": [
+            {
+                "port": 22,
+                "protocol": "tcp",
+                "state": "open",
+                "service": "ssh",
+                "service_version": "OpenSSH 6.6.1p1 Ubuntu 2ubuntu2.13 Ubuntu Linux; protocol 2.0"
+            },
+            {
+                "port": 25,
+                "protocol": "tcp",
+                "state": "filtered",
+                "service": "smtp",
+                "service_version": "N/A"
+            },
+            {
+                "port": 80,
+                "protocol": "tcp",
+                "state": "open",
+                "service": "http",
+                "service_version": "Apache httpd 2.4.7 (Ubuntu)"
+            },
+            {
+                "port": 2525,
+                "protocol": "tcp",
+                "state": "filtered",
+                "service": "ms-v-worlds",
+                "service_version": "N/A"
+            },
+            {
+                "port": 9929,
+                "protocol": "tcp",
+                "state": "open",
+                "service": "nping-echo",
+                "service_version": "Nping echo"
+            },
+            {
+                "port": 31337,
+                "protocol": "tcp",
+                "state": "open",
+                "service": "tcpwrapped",
+                "service_version": "N/A"
+            }
+        ]
+    },
+    "adwords.google.com": {
+        "ip": "74.125.133.113",
+        "state": "up",
+        "ports": [
+            {
+                "port": 80,
+                "protocol": "tcp",
+                "state": "open",
+                "service": "http",
+                "service_version": "gws"
+            },
+            {
+                "port": 443,
+                "protocol": "tcp",
+                "state": "open",
+                "service": "https",
+                "service_version": "gws"
+            }
+        ]
     }
-]
+}

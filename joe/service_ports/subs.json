@@ -1,8 +1,10 @@
 {
-  "count": 3,
   "subs": [
-    "www.facebook.com",
-    "www2.facebook.com",
-    "intern.facebook.com"
+    "alt.aspxmx.1.google.com",
+    "client.1.google.com",
+    "clients.1.google.com",
+    "gmail-smtp-msa.1.google.com",
+    "scanme.nmap.org",
+    "adwords.google.com"
   ]
 }
