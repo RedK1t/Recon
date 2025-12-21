@@ -1,0 +1,18 @@
+[
+  
+  {
+    "subdomain": "switch.facebook.com",
+    "url": "http://switch.facebook.com",
+    "status": 200
+  },
+  {
+    "subdomain": "th.facebook.com",
+    "url": "https://th.facebook.com",
+    "status": 200
+  },
+  {
+    "subdomain": "juice-shop.herokuapp.com",
+    "url": "https://juice-shop.herokuapp.com",
+    "status": 200
+  }
+]

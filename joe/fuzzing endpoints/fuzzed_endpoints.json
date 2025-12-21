@@ -1,0 +1,1054 @@
+{
+  "https://juice-shop.herokuapp.com": [
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/swagger",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/index.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/swagger.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/swagger-ui.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/swagger-resources.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/swagger-config.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/openapi.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/api.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/api-docs.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/apidocs.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/doc.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/docs.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/apispec.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/apispec_1.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/api-merged.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/index.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/swagger.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/swagger-ui.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/swagger-resources.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/swagger-config.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/openapi.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/api.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/api-docs.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/apidocs.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/doc.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/docs.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/apispec.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/apispec_1.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/api-merged.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/index.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/swagger.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/swagger-ui.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/swagger-resources.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/swagger-config.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/openapi.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/api.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/api-docs.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/apidocs.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/index.json",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/doc.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/swagger.json",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/docs.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/swagger-ui.json",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/apispec.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/swagger-resources.json",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/apispec_1.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/swagger-config.json",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/api-merged.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/openapi.json",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/api.json",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/api-docs.json",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/apidocs.json",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1.json",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2.json",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v3.json",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/doc.json",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/docs.json",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/apispec.json",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/apispec_1.json",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/api-merged.json",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/index.json",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/swagger.json",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/swagger-ui.json",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/swagger-resources.json",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/swagger-config.json",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/openapi.json",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/api.json",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/api-docs.json",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/apidocs.json",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/v1.json",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/v3.json",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/v2.json",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/doc.json",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/docs.json",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/apispec.json",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/apispec_1.json",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/api-merged.json",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/index.json",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/swagger.json",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/swagger-ui.json",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/swagger-resources.json",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/swagger-config.json",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/openapi.json",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/api.json",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/api-docs.json",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/apidocs.json",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/v1.json",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/v2.json",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/v3.json",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/doc.json",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/docs.json",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/apispec.json",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/apispec_1.json",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/api-merged.json",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/swagger.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/index",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/swagger-resources",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/index.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/swagger-config",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/openapi",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/api",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/api-docs",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/apidocs",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v3",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/doc",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/apispec",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/apispec_1",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/api-merged",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/index",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/swagger-ui",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/swagger",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/swagger-resources",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/swagger-config",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/openapi",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/api",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/api-docs",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/apidocs",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/v1",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/swagger-ui",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/v2",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/doc",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/apispec_1",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/api-merged",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/apispec",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/index",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/swagger",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/swagger-config",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/apidocs",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/v1",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/doc",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/doc/index.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/apispec_1/index.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/api-merged/index.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/api-docs.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/api-docs/index.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/apispec/index.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/apispec_1.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/apidocs/index.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/openapi/index.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/openapi.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/api.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/v1/index.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/api-merged.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/apidocs.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/v3/index.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/doc.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/swagger-config.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/api/index.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/docs/index.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/apispec.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/v2/index.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/docs.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/index/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/swagger/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/swagger-ui/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/swagger-resources/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/swagger-config/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/openapi/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/api/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/api-docs/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/apidocs/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v3/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/doc/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/docs/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/apispec/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/apispec_1/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/api-merged/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/index/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/swagger/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/swagger-ui/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/swagger-resources/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/swagger-config/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/openapi/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/api/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/api-docs/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/apidocs/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/v1/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/v2/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/doc/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/v3/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/docs/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/apispec/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/apispec_1/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/api-merged/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/index/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/swagger/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/swagger-ui/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/swagger-resources/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/swagger-config/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/openapi/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/api/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/api-docs/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/apidocs/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/v1/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/v2/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/v3/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/doc/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/docs/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/apispec/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/apispec_1/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/api-merged/",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/swagger-ui-init.js",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/swagger-ui.min.js",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/swagger-ui-standalone-preset.js",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/swagger-ui.js",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/swagger-ui-layout.js",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/swagger-ui-es-bundle-core.js",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/swagger-ui-plugins.js",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/swagger-ui-init.js",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/swagger-ui-bundle.js",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/swagger-ui-standalone-preset.js",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/swagger-ui.js",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/swagger-ui-bundle.js",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/swagger-ui.min.js",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/swagger-ui-es-bundle-core.js",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/swagger-ui-es-bundle.js",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/swagger-ui-layout.js",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/swagger-ui-plugins.js",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/swagger-ui-init.js",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/swagger-ui-bundle.js",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/swagger-ui-es-bundle.js",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/swagger-ui-standalone-preset.js",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/swagger-ui.js",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/swagger-ui.min.js",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/swagger-ui-es-bundle-core.js",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/swagger-ui-es-bundle.js",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/swagger-ui-layout.js",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/swagger-ui-init.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/swagger-ui-plugins.js",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/swagger-ui-bundle.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/swagger-ui-standalone-preset.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/swagger-ui.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/swagger-ui-es-bundle-core.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/swagger-ui-es-bundle.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/swagger-ui-layout.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/swagger-ui-plugins.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/swagger-ui-init.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/swagger-ui-bundle.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/swagger-ui-standalone-preset.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/swagger-ui.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/swagger-ui-es-bundle-core.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/swagger-ui-es-bundle.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/swagger-ui-layout.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v1/swagger-ui-plugins.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/swagger-ui-bundle.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/swagger-ui-init.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/swagger-ui-standalone-preset.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/swagger-ui.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/swagger-ui-es-bundle-core.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/swagger-ui-es-bundle.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/swagger-ui-layout.html",
+      "status": 200
+    },
+    {
+      "url": "https://juice-shop.herokuapp.com/api-docs/v2/swagger-ui-plugins.html",
+      "status": 200
+    }
+  ],
+  "https://httpbin.org": [
+    {
+      "url": "https://httpbin.org/",
+      "status": 200
+    },
+    {
+      "url": "https://httpbin.org/apidocs/index.html",
+      "status": 200
+    },
+    {
+      "url": "https://httpbin.org/apidocs/index.html",
+      "status": 200
+    },
+    {
+      "url": "https://httpbin.org/apidocs/index.html",
+      "status": 200
+    }
+  ]
+}
