@@ -79,9 +79,33 @@ async def check_endpoint(session, sem, base_url, endpoint, baseline):
 
                 if r.status < 400:
                     print(f"{Fore.GREEN}[+] {url} [{r.status}]{Style.RESET_ALL}")
+                    
+                    # Format Request
+                    req_info = r.request_info
+                    req_headers = ""
+                    for k, v in req_info.headers.items():
+                        req_headers += f"{k}: {v}\n"
+                    
+                    request_str = f"{req_info.method} {req_info.url.path_qs} HTTP/1.1\nHost: {req_info.url.host}\n{req_headers}".strip()
+
+                    # Format Response
+                    version_str = f"{r.version.major}.{r.version.minor}"
+                    resp_headers = ""
+                    for k, v in r.headers.items():
+                        resp_headers += f"{k}: {v}\n"
+                    
+                    try:
+                        decoded_body = body.decode('utf-8', errors='replace')
+                    except:
+                        decoded_body = "<binary_content>"
+
+                    response_str = f"HTTP/{version_str} {r.status} {r.reason}\n{resp_headers}\n{decoded_body}"
+
                     return {
-                         "url": url,
-                         "status": r.status
+                        "url": url,
+                        "status": r.status,
+                        "request": request_str,
+                        "response": response_str
                     }
         except:
             return None
