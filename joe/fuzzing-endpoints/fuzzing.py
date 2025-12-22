@@ -86,7 +86,7 @@ async def check_endpoint(session, sem, base_url, endpoint, baseline):
                     for k, v in req_info.headers.items():
                         req_headers += f"{k}: {v}\n"
                     
-                    request_str = f"{req_info.method} {req_info.url.path_qs} HTTP/1.1\nHost: {req_info.url.host}\n{req_headers}".strip()
+                    request_str = f"{req_info.method} {req_info.url.path_qs} HTTP/1.1\n{req_headers}".strip()
 
                     # Format Response
                     version_str = f"{r.version.major}.{r.version.minor}"
