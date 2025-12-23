@@ -7,14 +7,16 @@ import ssl
 import json
 import os
 import hashlib
+import uuid
 from tqdm import tqdm
 from colorama import Fore, Style, init
 
 init(autoreset=True)
 
-LIVE_HTTP_FILE = "live_http.json"
-ENDPOINTS_FILE = "endpoints.txt"
-OUTPUT_FILE = "fuzzed_endpoints.json"
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+LIVE_HTTP_FILE = os.path.join(SCRIPT_DIR, "live_http.json")
+ENDPOINTS_FILE = os.path.join(SCRIPT_DIR, "endpoints.txt")
+OUTPUT_FILE = os.path.join(SCRIPT_DIR, "fuzzed_endpoints.json")
 
 CONCURRENCY = 40
 TIMEOUT = 6
@@ -44,6 +46,54 @@ def load_endpoints():
 
     with open(ENDPOINTS_FILE, "r", encoding="utf-8") as f:
         return [x.strip().lstrip("/") for x in f if x.strip()]
+
+
+def build_tree(base_url, items):
+    root = {
+        "id": str(uuid.uuid4()),
+        "url": base_url,
+        "children": []
+    }
+
+    for item in items:
+        url = item.get("url", "")
+        if not url.startswith(base_url):
+            continue
+
+        relative_path = url[len(base_url):].strip("/")
+        if not relative_path:
+            root.update(item)
+            continue
+
+        segments = relative_path.split("/")
+        current = root
+        current_base = base_url
+
+        for i, segment in enumerate(segments):
+            target_url = f"{current_base}/{segment}"
+            found = None
+            for child in current["children"]:
+                if child["url"] == target_url:
+                    found = child
+                    break
+            
+            if not found:
+                found = {
+                    "id": str(uuid.uuid4()),
+                    "url": target_url,
+                    "children": []
+                }
+                current["children"].append(found)
+            
+            current = found
+            current_base = target_url
+
+            if i == len(segments) - 1:
+                for k, v in item.items():
+                    if k != "url":
+                        current[k] = v
+
+    return root
 
 
 # ================================
@@ -185,7 +235,7 @@ async def check_endpoint(session, sem, base_url, endpoint, baseline):
     return None
 
 
-async def fuzz_single_subdomain(session, sem, base_url, endpoints, pbar):
+async def fuzz_single_subdomain(session, sem, base_url, endpoints, pbar=None, progress_callback=None):
     baseline = await get_baseline(session, base_url)
     found = []
 
@@ -193,11 +243,29 @@ async def fuzz_single_subdomain(session, sem, base_url, endpoints, pbar):
     for ep in endpoints:
         tasks.append(check_endpoint(session, sem, base_url, ep, baseline))
 
+    completed = 0
+    total = len(tasks)
+
     for coro in asyncio.as_completed(tasks):
         res = await coro
         if res:
             found.append(res)
-        pbar.update(1)
+        
+        if pbar:
+            pbar.update(1)
+        
+        if progress_callback:
+            completed += 1
+            # We assume progress_callback handles the "global" progress tracking if possible, 
+            # or we just fire it per completion. 
+            # But run() handles the global pbar. 
+            # Let's simple call it if provided, maybe passing 1 to increment.
+            # actually run() iterates domains.
+            # Use a simple increment.
+            if asyncio.iscoroutinefunction(progress_callback):
+                await progress_callback(1)
+            else:
+                 progress_callback(1)
 
     return base_url, found
 
@@ -206,11 +274,13 @@ async def fuzz_single_subdomain(session, sem, base_url, endpoints, pbar):
 # Runner
 # ================================
 
-async def run():
+async def run(subdomains=None, endpoints=None, progress_callback=None):
     from urllib.parse import urlparse
     
-    subdomains = load_live_subdomains()
-    endpoints = load_endpoints()
+    if subdomains is None:
+        subdomains = load_live_subdomains()
+    if endpoints is None:
+        endpoints = load_endpoints()
 
     ssl_ctx = ssl.create_default_context()
     ssl_ctx.check_hostname = False
@@ -271,23 +341,58 @@ async def run():
         print(f"{Fore.CYAN}[*] Fuzzing {len(domains_to_fuzz)} domains...{Style.RESET_ALL}")
         
         # Now fuzz the final domains
-        with tqdm(total=total_requests, desc="Fuzzing endpoints", ncols=100) as pbar:
+        if progress_callback is None:
+            # Use tqdm if no external callback
+            with tqdm(total=total_requests, desc="Fuzzing endpoints", ncols=100) as pbar:
+                for domain_to_fuzz in domains_to_fuzz.keys():
+                    sub, eps = await fuzz_single_subdomain(
+                        session, sem, domain_to_fuzz, endpoints, pbar=pbar
+                    )
+                    if eps:
+                        results[domain_to_fuzz] = eps
+        else:
+            # Use external callback
             for domain_to_fuzz in domains_to_fuzz.keys():
                 sub, eps = await fuzz_single_subdomain(
-                    session, sem, domain_to_fuzz, endpoints, pbar
+                    session, sem, domain_to_fuzz, endpoints, pbar=None, progress_callback=progress_callback
                 )
                 if eps:
-                    # Store results under the domain we actually fuzzed
                     results[domain_to_fuzz] = eps
         
-        # Add redirect-only entries (domains that just redirect with status code only)
         for redirect_domain, status in redirect_map.items():
             results[redirect_domain] = status
 
-    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-        json.dump(results, f, indent=2)
+    # Build hierarchical data
+    final_data = []
 
-    print(f"\n[+] Saved results to {OUTPUT_FILE}")
+    # 1. Process fuzzed domains
+    for domain, found_items in results.items():
+        # results contains simple dicts if it came from redirect_map, need to skip those here?
+        # partial fix: results was mixing types in previous code?
+        # Wait, the previous code lines 285-286: results[redirect_domain] = status (which is a dict)
+        # So results contains both lists (from fuzzing) and dicts (from redirects).
+        # We should handle them separately or unifyingly.
+        
+        if isinstance(found_items, list):
+            tree = build_tree(domain, found_items)
+            final_data.append(tree)
+        else:
+            # It's a redirect entry (dict)
+             node = {
+                "id": str(uuid.uuid4()),
+                "url": domain,
+                "children": []
+            }
+             node.update(found_items)
+             final_data.append(node)
+
+    # If running as script, save to file
+    if __name__ == "__main__":
+        with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+            json.dump({"data": final_data}, f, indent=2)
+        print(f"\n[+] Saved results to {OUTPUT_FILE}")
+
+    return {"data": final_data}
 
 
 # ================================
