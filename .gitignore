@@ -201,9 +201,10 @@ cython_debug/
 .cursorignore
 .cursorindexingignore
 
-# Marimo
+# Marimodo
 marimo/_static/
 marimo/_lsp/
 __marimo__/
 .python-version
 joe/fuzzing-endpoints/fuzzed_endpoints.json
+joe/fuzzing-endpoints/__pycache__

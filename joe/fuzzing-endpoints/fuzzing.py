@@ -61,6 +61,79 @@ async def get_baseline(session, base_url):
 
 
 # ================================
+# Check if base domain redirects
+# ================================
+
+async def check_base_redirect(session, base_url):
+    """Check if base URL redirects and follow the entire redirect chain"""
+    redirect_chain = []
+    current_url = base_url
+    max_redirects = 10  # Prevent infinite loops
+    
+    try:
+        for _ in range(max_redirects):
+            async with session.get(current_url, timeout=TIMEOUT, allow_redirects=False) as r:
+                if 300 <= r.status < 400:
+                    # This is a redirect
+                    redirect_url = r.headers.get('Location', '')
+                    if not redirect_url:
+                        break
+                    
+                    body = await r.read()
+                    
+                    # Format request
+                    req_info = r.request_info
+                    req_headers = ""
+                    for k, v in req_info.headers.items():
+                        req_headers += f"{k}: {v}\n"
+                    request_str = f"{req_info.method} {req_info.url.path_qs} HTTP/1.1\n{req_headers}".strip()
+                    
+                    # Format response
+                    version_str = f"{r.version.major}.{r.version.minor}"
+                    resp_headers = ""
+                    for k, v in r.headers.items():
+                        resp_headers += f"{k}: {v}\n"
+                    
+                    try:
+                        decoded_body = body.decode('utf-8', errors='replace')
+                    except:
+                        decoded_body = "<binary_content>"
+                    
+                    response_str = f"HTTP/{version_str} {r.status} {r.reason}\n{resp_headers}\n{decoded_body}"
+                    
+                    # Resolve the redirect URL (handle relative URLs)
+                    from urllib.parse import urljoin
+                    next_url = urljoin(current_url, redirect_url)
+                    
+                    # Add this redirect to the chain
+                    redirect_chain.append({
+                        "from": current_url,
+                        "to": next_url,
+                        "status": r.status,
+                        "request": request_str,
+                        "response": response_str
+                    })
+                    
+                    # Move to next URL in chain
+                    current_url = next_url
+                else:
+                    # Not a redirect, we've reached the end
+                    break
+        
+        if redirect_chain:
+            # Get the final destination from the last redirect
+            from urllib.parse import urlparse
+            final_url = redirect_chain[-1]["to"]
+            parsed = urlparse(final_url)
+            final_base = f"{parsed.scheme}://{parsed.netloc}"
+            return redirect_chain, final_base
+        
+        return None, None
+    except:
+        return None, None
+
+
+# ================================
 # Endpoint fuzzing
 # ================================
 
@@ -134,10 +207,10 @@ async def fuzz_single_subdomain(session, sem, base_url, endpoints, pbar):
 # ================================
 
 async def run():
+    from urllib.parse import urlparse
+    
     subdomains = load_live_subdomains()
     endpoints = load_endpoints()
-
-    total_requests = len(subdomains) * len(endpoints)
 
     ssl_ctx = ssl.create_default_context()
     ssl_ctx.check_hostname = False
@@ -146,6 +219,8 @@ async def run():
     sem = asyncio.Semaphore(CONCURRENCY)
 
     results = {}
+    redirect_map = {}  # Map of redirecting domains to their status codes
+    domains_to_fuzz = {}  # Map of final domains to fuzz
 
     timeout = aiohttp.ClientTimeout(total=None)
 
@@ -154,13 +229,60 @@ async def run():
         connector=aiohttp.TCPConnector(ssl=ssl_ctx)
     ) as session:
 
+        print(f"{Fore.CYAN}[*] Checking for base domain redirects...{Style.RESET_ALL}")
+        
+        # First, check each subdomain for redirects
+        for base_url in subdomains:
+            redirect_chain, final_base = await check_base_redirect(session, base_url)
+            
+            if redirect_chain:
+                # This domain has a redirect chain
+                print(f"{Fore.YELLOW}[→] {base_url} has {len(redirect_chain)} redirect(s) to {final_base}{Style.RESET_ALL}")
+                
+                # Store each redirect in the chain
+                for redirect_info in redirect_chain:
+                    from_url = redirect_info["from"]
+                    to_url = redirect_info["to"]
+                    
+                    # Extract base domain from "from" URL
+                    from urllib.parse import urlparse
+                    parsed_from = urlparse(from_url)
+                    from_domain = f"{parsed_from.scheme}://{parsed_from.netloc}"
+                    
+                    redirect_map[from_domain] = {
+                        "status": str(redirect_info["status"]),
+                        "redirect": to_url,
+                        "request": redirect_info["request"],
+                        "response": redirect_info["response"]
+                    }
+                
+                # We'll fuzz the final destination
+                if final_base not in domains_to_fuzz:
+                    domains_to_fuzz[final_base] = []
+                domains_to_fuzz[final_base].append(base_url)  # Track which domains redirect here
+            else:
+                # No redirect, fuzz this domain normally
+                if base_url not in domains_to_fuzz:
+                    domains_to_fuzz[base_url] = []
+        
+        # Calculate total requests
+        total_requests = len(domains_to_fuzz) * len(endpoints)
+        
+        print(f"{Fore.CYAN}[*] Fuzzing {len(domains_to_fuzz)} domains...{Style.RESET_ALL}")
+        
+        # Now fuzz the final domains
         with tqdm(total=total_requests, desc="Fuzzing endpoints", ncols=100) as pbar:
-            for base_url in subdomains:
+            for domain_to_fuzz in domains_to_fuzz.keys():
                 sub, eps = await fuzz_single_subdomain(
-                    session, sem, base_url, endpoints, pbar
+                    session, sem, domain_to_fuzz, endpoints, pbar
                 )
                 if eps:
-                    results[sub] = eps
+                    # Store results under the domain we actually fuzzed
+                    results[domain_to_fuzz] = eps
+        
+        # Add redirect-only entries (domains that just redirect with status code only)
+        for redirect_domain, status in redirect_map.items():
+            results[redirect_domain] = status
 
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         json.dump(results, f, indent=2)
