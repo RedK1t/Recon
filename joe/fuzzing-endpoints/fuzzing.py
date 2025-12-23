@@ -12,6 +12,7 @@ from tqdm import tqdm
 from colorama import Fore, Style, init
 
 init(autoreset=True)
+from datetime import datetime, timezone
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 LIVE_HTTP_FILE = os.path.join(SCRIPT_DIR, "live_http.json")
@@ -52,6 +53,9 @@ def build_tree(base_url, items):
     root = {
         "id": str(uuid.uuid4()),
         "url": base_url,
+        "method": None,
+        "source": "Active",
+        "created_at": datetime.now(timezone.utc).isoformat(),
         "children": []
     }
 
@@ -81,6 +85,9 @@ def build_tree(base_url, items):
                 found = {
                     "id": str(uuid.uuid4()),
                     "url": target_url,
+                    "method": None,
+                    "source": "Active",
+                    "created_at": datetime.now(timezone.utc).isoformat(),
                     "children": []
                 }
                 current["children"].append(found)
@@ -227,6 +234,7 @@ async def check_endpoint(session, sem, base_url, endpoint, baseline):
                     return {
                         "url": url,
                         "status": r.status,
+                        "method": "GET",
                         "request": request_str,
                         "response": response_str
                     }
@@ -381,7 +389,10 @@ async def run(subdomains=None, endpoints=None, progress_callback=None):
              node = {
                 "id": str(uuid.uuid4()),
                 "url": domain,
-                "children": []
+                "children": [],
+                "method": None,
+                "source": "Active",
+                "created_at": datetime.now(timezone.utc).isoformat()
             }
              node.update(found_items)
              final_data.append(node)

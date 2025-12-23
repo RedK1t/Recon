@@ -51,11 +51,7 @@ def main():
         # Start the process
         p = subprocess.Popen(
             [python_exe, abs_path],
-            cwd=abs_cwd,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-            text=True,
-            bufsize=1
+            cwd=abs_cwd
         )
         processes.append(p)
         

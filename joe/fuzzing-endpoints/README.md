@@ -9,6 +9,7 @@ A powerful, asynchronous directory and endpoint fuzzer designed for security res
 - **Hierarchical Output**: Results are organized into a nested JSON structure (folders and files) with unique IDs for each node.
 - **Baseline Detection**: Filters out junk responses by establishing a baseline for 404/not-found pages.
 - **FastAPI Integration**: Includes a production-ready API to trigger fuzzing jobs programmatically.
+- **Rich Metadata**: Every node includes `method`, `source` (Active), and `created_at` (timestamp) fields.
 
 ## Installation
 
@@ -69,11 +70,17 @@ The tool generates a JSON structure like this:
     {
       "id": "uuid-v4",
       "url": "https://example.com",
+      "method": null,
+      "source": "Active",
+      "created_at": "2025-12-23T14:00:00Z",
       "children": [
         {
           "id": "uuid-v4",
           "url": "https://example.com/api",
           "status": 200,
+          "method": "GET",
+          "source": "Active",
+          "created_at": "2025-12-23T14:00:05Z",
           "children": [...]
         }
       ]
