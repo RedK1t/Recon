@@ -164,6 +164,10 @@ def enumerate_subdomains(domain, wordlist_path=None, preset_id="1",
                     extracted.append(prefix)
         prefixes = list(set(prefixes + extracted))
     
+    # Add the base domain itself to prefixes to ensure it's scanned
+    if "" not in prefixes:
+        prefixes.append("")
+    
     total_prefixes = len(prefixes)
     
     # Active enumeration
@@ -188,7 +192,9 @@ def enumerate_subdomains(domain, wordlist_path=None, preset_id="1",
                 dns_percentage = (completed / total_prefixes) * 50  # DNS is first 50%
                 # Send if we've crossed a 5% threshold
                 if dns_percentage >= last_reported_percentage + 5 or completed == total_prefixes:
-                    progress_callback(dns_percentage, completed, total_prefixes * 2)  # total * 2 for both phases
+                    # If total_prefixes is 0 (shouldn't happen here), ensure we don't divide by zero
+                    # and ensure we don't exceed 50% in DNS phase
+                    progress_callback(min(dns_percentage, 50.0), completed, total_prefixes * 2)
                     last_reported_percentage = dns_percentage
             
             # Collect results (no callback here anymore)
@@ -201,7 +207,19 @@ def enumerate_subdomains(domain, wordlist_path=None, preset_id="1",
     
     # Perform HTTP/HTTPS validation with progress tracking
     # HTTP validation is 50-100% of total progress
-    def http_progress_wrapper(result):
+    def http_progress_wrapper(percentage, completed_validation, total_validation):
+        if progress_callback:
+            # Normalize phase 2 progress to match the scale of phase 1
+            # Total remains total_prefixes * 2
+            if total_validation > 0:
+                # Map 0..total_validation to total_prefixes..(total_prefixes * 2)
+                normalized_completed = total_prefixes + int((completed_validation / total_validation) * total_prefixes)
+            else:
+                normalized_completed = total_prefixes * 2
+            
+            progress_callback(percentage, normalized_completed, total_prefixes * 2)
+    
+    def http_result_wrapper(result):
         # This gets called for each validated subdomain
         if http_validation_callback:
             http_validation_callback(result)
@@ -209,8 +227,8 @@ def enumerate_subdomains(domain, wordlist_path=None, preset_id="1",
     validation_result = asyncio.run(
         http_validator.validate_subdomains(
             results, 
-            http_progress_wrapper,
-            progress_callback  # Pass progress callback for HTTP validation phase
+            http_result_wrapper,
+            http_progress_wrapper
         )
     )
     

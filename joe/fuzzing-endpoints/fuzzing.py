@@ -19,8 +19,10 @@ LIVE_HTTP_FILE = os.path.join(SCRIPT_DIR, "live_http.json")
 ENDPOINTS_FILE = os.path.join(SCRIPT_DIR, "endpoints.txt")
 OUTPUT_FILE = os.path.join(SCRIPT_DIR, "fuzzed_endpoints.json")
 
-CONCURRENCY = 40
-TIMEOUT = 6
+CONCURRENCY = 1000
+TIMEOUT = 5
+MAX_REDIRECTS = 10
+DNS_CACHE_TTL = 3600
 
 # ================================
 # Utilities
@@ -107,98 +109,104 @@ def build_tree(base_url, items):
 # Baseline detection
 # ================================
 
-async def get_baseline(session, base_url):
+async def get_baseline(session, sem, base_url):
     fake = f"{base_url}/this_should_not_exist_987654"
-    try:
-        async with session.get(fake, timeout=TIMEOUT) as r:
-            body = await r.read()
-            return r.status, len(body), hashlib.md5(body).hexdigest()
-    except:
-        return None
+    async with sem:
+        try:
+            async with session.get(fake, timeout=TIMEOUT) as r:
+                body = await r.read()
+                return r.status, len(body), hashlib.md5(body).hexdigest()
+        except:
+            return None
 
 
 # ================================
 # Check if base domain redirects
 # ================================
 
-async def check_base_redirect(session, base_url):
+async def check_base_redirect(session, sem, base_url):
     """Check if base URL redirects and follow the entire redirect chain"""
     redirect_chain = []
     current_url = base_url
-    max_redirects = 10  # Prevent infinite loops
     
     try:
-        for _ in range(max_redirects):
-            async with session.get(current_url, timeout=TIMEOUT, allow_redirects=False) as r:
-                if 300 <= r.status < 400:
-                    # This is a redirect
-                    redirect_url = r.headers.get('Location', '')
-                    if not redirect_url:
+        for _ in range(MAX_REDIRECTS):
+            async with sem:
+                async with session.get(current_url, timeout=TIMEOUT, allow_redirects=False) as r:
+                    if 300 <= r.status < 400:
+                        # This is a redirect
+                        redirect_url = r.headers.get('Location', '')
+                        if not redirect_url:
+                            break
+                        
+                        body = await r.read()
+                        
+                        # Format request
+                        req_info = r.request_info
+                        req_headers = "".join([f"{k}: {v}\n" for k, v in req_info.headers.items()])
+                        request_str = f"{req_info.method} {req_info.url.path_qs} HTTP/1.1\n{req_headers}".strip()
+                        
+                        # Format response
+                        version_str = f"{r.version.major}.{r.version.minor}"
+                        resp_headers = "".join([f"{k}: {v}\n" for k, v in r.headers.items()])
+                        
+                        try:
+                            decoded_body = body.decode('utf-8', errors='replace')
+                        except:
+                            decoded_body = "<binary_content>"
+                        
+                        response_str = f"HTTP/{version_str} {r.status} {r.reason}\n{resp_headers}\n{decoded_body}"
+                        
+                        # Resolve the redirect URL (handle relative URLs)
+                        from urllib.parse import urljoin
+                        next_url = urljoin(current_url, redirect_url)
+                        
+                        # Add this redirect to the chain
+                        redirect_chain.append({
+                            "from": current_url,
+                            "to": next_url,
+                            "status": r.status,
+                            "method": req_info.method,
+                            "request": request_str,
+                            "response": response_str
+                        })
+                        
+                        # Move to next URL in chain
+                        current_url = next_url
+                    else:
+                        # Not a redirect, we've reached the end
                         break
-                    
-                    body = await r.read()
-                    
-                    # Format request
-                    req_info = r.request_info
-                    req_headers = ""
-                    for k, v in req_info.headers.items():
-                        req_headers += f"{k}: {v}\n"
-                    request_str = f"{req_info.method} {req_info.url.path_qs} HTTP/1.1\n{req_headers}".strip()
-                    
-                    # Format response
-                    version_str = f"{r.version.major}.{r.version.minor}"
-                    resp_headers = ""
-                    for k, v in r.headers.items():
-                        resp_headers += f"{k}: {v}\n"
-                    
-                    try:
-                        decoded_body = body.decode('utf-8', errors='replace')
-                    except:
-                        decoded_body = "<binary_content>"
-                    
-                    response_str = f"HTTP/{version_str} {r.status} {r.reason}\n{resp_headers}\n{decoded_body}"
-                    
-                    # Resolve the redirect URL (handle relative URLs)
-                    from urllib.parse import urljoin
-                    next_url = urljoin(current_url, redirect_url)
-                    
-                    # Add this redirect to the chain
-                    redirect_chain.append({
-                        "from": current_url,
-                        "to": next_url,
-                        "status": r.status,
-                        "request": request_str,
-                        "response": response_str
-                    })
-                    
-                    # Move to next URL in chain
-                    current_url = next_url
-                else:
-                    # Not a redirect, we've reached the end
-                    break
         
         if redirect_chain:
             # Get the final destination from the last redirect
-            from urllib.parse import urlparse
             final_url = redirect_chain[-1]["to"]
+            from urllib.parse import urlparse
             parsed = urlparse(final_url)
             final_base = f"{parsed.scheme}://{parsed.netloc}"
-            return redirect_chain, final_base
+            return base_url, redirect_chain, final_base
         
-        return None, None
+        return base_url, None, None
     except:
-        return None, None
+        return base_url, None, None
 
 
 # ================================
 # Endpoint fuzzing
 # ================================
 
-async def check_endpoint(session, sem, base_url, endpoint, baseline):
+async def check_endpoint(session, sem, base_url, endpoint, baseline, progress_callback=None, pbar=None):
     url = f"{base_url}/{endpoint}"
     async with sem:
         try:
             async with session.get(url, timeout=TIMEOUT, allow_redirects=True) as r:
+                # 1. Optimization: Check headers first if baseline exists
+                if baseline:
+                    # Content-Length is often present for static error pages
+                    if r.status == baseline[0] and r.content_length == baseline[1]:
+                        return None
+
+                # 2. Optimization: Only read the body if we really need to check against hash
+                # or if we found something interesting (< 400)
                 body = await r.read()
 
                 if baseline:
@@ -208,21 +216,15 @@ async def check_endpoint(session, sem, base_url, endpoint, baseline):
                         return None
 
                 if r.status < 400:
-                    print(f"{Fore.GREEN}[+] {url} [{r.status}]{Style.RESET_ALL}")
                     
                     # Format Request
                     req_info = r.request_info
-                    req_headers = ""
-                    for k, v in req_info.headers.items():
-                        req_headers += f"{k}: {v}\n"
-                    
+                    req_headers = "".join([f"{k}: {v}\n" for k, v in req_info.headers.items()])
                     request_str = f"{req_info.method} {req_info.url.path_qs} HTTP/1.1\n{req_headers}".strip()
 
                     # Format Response
                     version_str = f"{r.version.major}.{r.version.minor}"
-                    resp_headers = ""
-                    for k, v in r.headers.items():
-                        resp_headers += f"{k}: {v}\n"
+                    resp_headers = "".join([f"{k}: {v}\n" for k, v in r.headers.items()])
                     
                     try:
                         decoded_body = body.decode('utf-8', errors='replace')
@@ -239,42 +241,28 @@ async def check_endpoint(session, sem, base_url, endpoint, baseline):
                         "response": response_str
                     }
         except:
-            return None
+            pass
+        finally:
+            if pbar:
+                pbar.update(1)
+            if progress_callback:
+                if asyncio.iscoroutinefunction(progress_callback):
+                    await progress_callback(1)
+                else:
+                    progress_callback(1)
     return None
 
 
 async def fuzz_single_subdomain(session, sem, base_url, endpoints, pbar=None, progress_callback=None):
-    baseline = await get_baseline(session, base_url)
-    found = []
-
-    tasks = []
-    for ep in endpoints:
-        tasks.append(check_endpoint(session, sem, base_url, ep, baseline))
-
-    completed = 0
-    total = len(tasks)
-
-    for coro in asyncio.as_completed(tasks):
-        res = await coro
-        if res:
-            found.append(res)
-        
-        if pbar:
-            pbar.update(1)
-        
-        if progress_callback:
-            completed += 1
-            # We assume progress_callback handles the "global" progress tracking if possible, 
-            # or we just fire it per completion. 
-            # But run() handles the global pbar. 
-            # Let's simple call it if provided, maybe passing 1 to increment.
-            # actually run() iterates domains.
-            # Use a simple increment.
-            if asyncio.iscoroutinefunction(progress_callback):
-                await progress_callback(1)
-            else:
-                 progress_callback(1)
-
+    baseline = await get_baseline(session, sem, base_url)
+    
+    tasks = [
+        check_endpoint(session, sem, base_url, ep, baseline, progress_callback, pbar)
+        for ep in endpoints
+    ]
+    
+    results = await asyncio.gather(*tasks)
+    found = [r for r in results if r]
     return base_url, found
 
 
@@ -304,68 +292,72 @@ async def run(subdomains=None, endpoints=None, progress_callback=None):
 
     async with aiohttp.ClientSession(
         timeout=timeout,
-        connector=aiohttp.TCPConnector(ssl=ssl_ctx)
+        connector=aiohttp.TCPConnector(
+            ssl=ssl_ctx, 
+            limit=0,              # Global limit: None (controlled by Semaphore)
+            limit_per_host=100,  # Avoid overwhelming a single host too much
+            ttl_dns_cache=DNS_CACHE_TTL,
+            use_dns_cache=True,
+            force_close=False,    # Maintain keep-alive
+            enable_cleanup_closed=True
+        )
     ) as session:
 
         print(f"{Fore.CYAN}[*] Checking for base domain redirects...{Style.RESET_ALL}")
         
-        # First, check each subdomain for redirects
-        for base_url in subdomains:
-            redirect_chain, final_base = await check_base_redirect(session, base_url)
-            
+        # Parallelize redirect checks
+        redirect_tasks = [check_base_redirect(session, sem, url) for url in subdomains]
+        redirect_results = await asyncio.gather(*redirect_tasks)
+        
+        for base_url, redirect_chain, final_base in redirect_results:
             if redirect_chain:
-                # This domain has a redirect chain
                 print(f"{Fore.YELLOW}[→] {base_url} has {len(redirect_chain)} redirect(s) to {final_base}{Style.RESET_ALL}")
                 
-                # Store each redirect in the chain
                 for redirect_info in redirect_chain:
                     from_url = redirect_info["from"]
                     to_url = redirect_info["to"]
-                    
-                    # Extract base domain from "from" URL
-                    from urllib.parse import urlparse
                     parsed_from = urlparse(from_url)
                     from_domain = f"{parsed_from.scheme}://{parsed_from.netloc}"
                     
                     redirect_map[from_domain] = {
                         "status": str(redirect_info["status"]),
+                        "method": redirect_info["method"],
                         "redirect": to_url,
                         "request": redirect_info["request"],
                         "response": redirect_info["response"]
                     }
                 
-                # We'll fuzz the final destination
                 if final_base not in domains_to_fuzz:
                     domains_to_fuzz[final_base] = []
-                domains_to_fuzz[final_base].append(base_url)  # Track which domains redirect here
+                domains_to_fuzz[final_base].append(base_url)
             else:
-                # No redirect, fuzz this domain normally
                 if base_url not in domains_to_fuzz:
                     domains_to_fuzz[base_url] = []
         
         # Calculate total requests
         total_requests = len(domains_to_fuzz) * len(endpoints)
+        print(f"{Fore.CYAN}[*] Fuzzing {len(domains_to_fuzz)} domains ({total_requests} total requests)...{Style.RESET_ALL}")
         
-        print(f"{Fore.CYAN}[*] Fuzzing {len(domains_to_fuzz)} domains...{Style.RESET_ALL}")
+        # Now fuzz the final domains in parallel
+        fuzz_tasks = []
         
-        # Now fuzz the final domains
         if progress_callback is None:
-            # Use tqdm if no external callback
             with tqdm(total=total_requests, desc="Fuzzing endpoints", ncols=100) as pbar:
                 for domain_to_fuzz in domains_to_fuzz.keys():
-                    sub, eps = await fuzz_single_subdomain(
+                    fuzz_tasks.append(fuzz_single_subdomain(
                         session, sem, domain_to_fuzz, endpoints, pbar=pbar
-                    )
-                    if eps:
-                        results[domain_to_fuzz] = eps
+                    ))
+                fuzz_results = await asyncio.gather(*fuzz_tasks)
         else:
-            # Use external callback
             for domain_to_fuzz in domains_to_fuzz.keys():
-                sub, eps = await fuzz_single_subdomain(
-                    session, sem, domain_to_fuzz, endpoints, pbar=None, progress_callback=progress_callback
-                )
-                if eps:
-                    results[domain_to_fuzz] = eps
+                fuzz_tasks.append(fuzz_single_subdomain(
+                    session, sem, domain_to_fuzz, endpoints, progress_callback=progress_callback
+                ))
+            fuzz_results = await asyncio.gather(*fuzz_tasks)
+
+        for domain, found_items in fuzz_results:
+            if found_items:
+                results[domain] = found_items
         
         for redirect_domain, status in redirect_map.items():
             results[redirect_domain] = status

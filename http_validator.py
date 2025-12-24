@@ -75,6 +75,8 @@ async def validate_subdomains(subdomain_results: List[Dict],
     """
     total = len(subdomain_results)
     if total == 0:
+        if progress_callback:
+            progress_callback(100.0, 0, 0)
         return {"live_web_services": [], "dns_only": []}
     
     # Create tasks for all subdomains
