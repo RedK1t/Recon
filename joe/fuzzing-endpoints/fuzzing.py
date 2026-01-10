@@ -10,6 +10,7 @@ import hashlib
 import uuid
 from tqdm import tqdm
 from colorama import Fore, Style, init
+from bs4 import BeautifulSoup
 
 init(autoreset=True)
 from datetime import datetime, timezone
@@ -49,6 +50,36 @@ def load_endpoints():
 
     with open(ENDPOINTS_FILE, "r", encoding="utf-8") as f:
         return [x.strip().lstrip("/") for x in f if x.strip()]
+
+
+def format_response(body: bytes, content_type: str = "") -> str:
+    """
+    Format the response body.
+    - If JSON, pretty print it.
+    - If HTML, use BeautifulSoup to prettify.
+    - Otherwise, try decode utf-8.
+    """
+    try:
+        decoded = body.decode('utf-8', errors='replace')
+        
+        if "application/json" in content_type:
+            try:
+                parsed = json.loads(decoded)
+                return json.dumps(parsed, indent=2)
+            except:
+                pass
+        
+        # Try HTML prettify if it looks like HTML
+        if "<html" in decoded.lower() or "<body" in decoded.lower() or "text/html" in content_type:
+            try:
+                soup = BeautifulSoup(decoded, "html.parser")
+                return soup.prettify()
+            except:
+                pass
+                
+        return decoded
+    except Exception:
+        return "<binary_content>"
 
 
 def build_tree(base_url, items):
@@ -151,7 +182,8 @@ async def check_base_redirect(session, sem, base_url):
                         resp_headers = "".join([f"{k}: {v}\n" for k, v in r.headers.items()])
                         
                         try:
-                            decoded_body = body.decode('utf-8', errors='replace')
+                            content_type = r.headers.get("Content-Type", "").lower()
+                            decoded_body = format_response(body, content_type)
                         except:
                             decoded_body = "<binary_content>"
                         
@@ -227,7 +259,8 @@ async def check_endpoint(session, sem, base_url, endpoint, baseline, progress_ca
                     resp_headers = "".join([f"{k}: {v}\n" for k, v in r.headers.items()])
                     
                     try:
-                        decoded_body = body.decode('utf-8', errors='replace')
+                        content_type = r.headers.get("Content-Type", "").lower()
+                        decoded_body = format_response(body, content_type)
                     except:
                         decoded_body = "<binary_content>"
 

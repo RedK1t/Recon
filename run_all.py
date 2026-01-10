@@ -35,16 +35,18 @@ def signal_handler(sig, frame):
 def main():
     signal.signal(signal.SIGINT, signal_handler)
     
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    
     # Get the absolute path to the virtual environment python if it exists
-    venv_python = os.path.join(os.getcwd(), "venv", "Scripts", "python.exe")
+    venv_python = os.path.join(base_dir, "venv", "Scripts", "python.exe")
     python_exe = venv_python if os.path.exists(venv_python) else sys.executable
 
     print(f"[*] Using Python: {python_exe}")
     print("[*] Starting all APIs...")
 
     for api in APIS:
-        abs_path = os.path.abspath(os.path.join(os.getcwd(), api["path"]))
-        abs_cwd = os.path.abspath(os.path.join(os.getcwd(), api["cwd"]))
+        abs_path = os.path.abspath(os.path.join(base_dir, api["path"]))
+        abs_cwd = os.path.abspath(os.path.join(base_dir, api["cwd"]))
         
         print(f"[+] Starting {api['name']} at {api['path']}...")
         
