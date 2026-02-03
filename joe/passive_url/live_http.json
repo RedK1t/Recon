@@ -1,0 +1,9 @@
+{
+  "www.facebook.com": [
+    "https://www.facebook.com/login",
+    "https://www.facebook.com/api/graphql"
+  ],
+  "intern.facebook.com": [
+    "https://intern.facebook.com/login"
+  ]
+}
