@@ -31,15 +31,20 @@ def load_domains(json_file):
 
     return list(domains)
 
-def run_command(command):
+def run_command(command, timeout=30):
+    """Run a command with timeout to prevent hanging."""
     try:
         result = subprocess.run(
             command,
             capture_output=True,
             text=True,
-            check=False
+            check=False,
+            timeout=timeout
         )
         return result.stdout.splitlines()
+    except subprocess.TimeoutExpired:
+        print(f"[!] Command timeout after {timeout}s: {' '.join(command)}")
+        return []
     except Exception as e:
         print(f"[!] Command error: {e}")
         return []
@@ -62,16 +67,19 @@ def filter_urls(urls):
 
 def wayback(domain):
     print(f"[+] Waybackurls -> {domain}")
-    return run_command(["waybackurls", domain])
+    return run_command(["waybackurls", domain], timeout=60)
 
-def katana_passive(domain):
+def katana_crawl(domain):
+    """Katana active crawling with shallow depth (passive mode not supported in this version)."""
     print(f"[+] Katana -> {domain}")
     return run_command([
         "katana",
         "-u", f"https://{domain}",
-        "-passive",
-        "-silent"
-    ])
+        "-d", "2",  # Shallow depth crawling
+        "-silent",
+        "-jc",  # JavaScript crawling
+        "-kf", "all"  # Known files
+    ], timeout=60)
 
 def gospider_passive(domain):
     print(f"[+] GoSpider -> {domain}")
@@ -92,9 +100,9 @@ def main():
         print(f"\n[*] Processing {domain}")
         urls = set()
 
-        urls.update(wayback(domain))
-        urls.update(katana_passive(domain))
-        urls.update(gospider_passive(domain))
+        # urls.update(wayback(domain))  # Disabled - very slow for large domains, often times out
+        # urls.update(katana_crawl(domain))  # Disabled - slow active crawling, can timeout
+        urls.update(gospider_passive(domain))  # Fast and reliable
 
         clean_urls = filter_urls(urls)
 

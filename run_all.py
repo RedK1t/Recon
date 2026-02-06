@@ -21,6 +21,11 @@ APIS = [
         "name": "Fuzzing API",
         "path": "joe/fuzzing-endpoints/api.py",
         "cwd": "joe/fuzzing-endpoints"
+    },
+    {
+        "name": "Passive URL Discovery API",
+        "path": "joe/passive_url/api.py",
+        "cwd": "joe/passive_url"
     }
 ]
 
