@@ -8,10 +8,11 @@ This API provides endpoints to discover URLs for target domains using passive re
 
 ## Features
 
-- **Three URL Discovery Tools**: 
-  - **Waybackurls**: Queries Wayback Machine archives (60s timeout)
-  - **Katana**: Active shallow crawling with JavaScript support (depth 2, 60s timeout)
-  - **GoSpider**: Passive URL discovery
+- **URL Discovery with GoSpider**: 
+  - Fast and reliable passive URL discovery
+  - Crawls live sites and checks common sources
+  - No timeout issues
+  - *(Note: Waybackurls and Katana are available in the code but currently disabled due to timeout issues with large domains)*
 - **Parallel Processing**: Processes multiple domains concurrently using thread pools
 - **Smart Filtering**: Automatically filters out common static assets (images, CSS, fonts, etc.)
 - **Timeout Protection**: All tools have configurable timeouts to prevent hanging
