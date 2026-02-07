@@ -49,8 +49,21 @@ def run_command(command, timeout=30):
         print(f"[!] Command error: {e}")
         return []
 
-def filter_urls(urls):
+def filter_urls(urls, strict_domain=None):
     clean = set()
+    
+    # Pre-process strict_domain for comparison
+    if strict_domain:
+        strict_domain = strict_domain.lower().strip()
+        # Remove protocol if present
+        if "://" in strict_domain:
+             from urllib.parse import urlparse
+             strict_domain = urlparse(strict_domain).netloc
+        # Remove port from strict_domain if present (e.g. user passed example.com:80)
+        if ":" in strict_domain:
+            strict_domain = strict_domain.split(":")[0]
+
+    from urllib.parse import urlparse
 
     for url in urls:
         url = url.strip()
@@ -60,6 +73,21 @@ def filter_urls(urls):
 
         if any(url.lower().endswith(ext) for ext in BLACKLIST_EXTENSIONS):
             continue
+            
+        if strict_domain:
+            try:
+                parsed = urlparse(url)
+                netloc = parsed.netloc.lower()
+                
+                # Strip port if present in URL hostname
+                if ":" in netloc:
+                    netloc = netloc.split(":")[0]
+                
+                # Check strict equality of hostname
+                if netloc != strict_domain:
+                    continue
+            except:
+                continue
 
         clean.add(url)
 
@@ -104,7 +132,7 @@ def main():
         # urls.update(katana_crawl(domain))  # Disabled - slow active crawling, can timeout
         urls.update(gospider_passive(domain))  # Fast and reliable
 
-        clean_urls = filter_urls(urls)
+        clean_urls = filter_urls(urls, strict_domain=domain)
 
         if clean_urls:
             results[domain] = clean_urls

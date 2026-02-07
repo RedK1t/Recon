@@ -18,14 +18,9 @@ APIS = [
         "cwd": "joe/service_ports"
     },
     {
-        "name": "Fuzzing API",
-        "path": "joe/fuzzing-endpoints/api.py",
-        "cwd": "joe/fuzzing-endpoints"
-    },
-    {
-        "name": "Passive URL Discovery API",
-        "path": "joe/passive_url/api.py",
-        "cwd": "joe/passive_url"
+        "name": "Unified Recon API",
+        "path": "joe/unified_api/api.py",
+        "cwd": "joe/unified_api"
     }
 ]
 

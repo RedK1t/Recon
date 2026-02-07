@@ -74,7 +74,10 @@ def resolve_a(host, timeout):
 
 def worker(prefix, domain, timeout):
     """Worker function for concurrent subdomain resolution"""
-    host = f"{prefix}.{domain}".strip().lower()
+    if prefix:
+        host = f"{prefix}.{domain}".strip().lower()
+    else:
+        host = domain.strip().lower()
     return resolve_a(host, timeout)
 
 
