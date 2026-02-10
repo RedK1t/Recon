@@ -113,7 +113,7 @@ def get_preset_path(preset_id):
     return PRESET_NAMES["1"]  # Default to top1k
 
 
-def enumerate_subdomains(domain, wordlist_path=None, preset_id="1", 
+def enumerate_subdomains(domain, wordlist_path=None, preset_id=None, 
                         passive=False, timeout=5.0, threads=30, 
                         progress_callback=None, subdomain_callback=None,
                         http_validation_callback=None):
@@ -147,14 +147,16 @@ def enumerate_subdomains(domain, wordlist_path=None, preset_id="1",
     domain = domain_ascii.lower()
     
     # Load wordlist
+    prefixes = []
     if wordlist_path and os.path.isfile(wordlist_path):
         prefixes = load_wordlist(wordlist_path)
-    else:
+    elif preset_id:
         preset_name, preset_path = get_preset_path(preset_id)
         if preset_path:
             prefixes = load_wordlist(preset_path)
-        else:
-            raise ValueError("Invalid preset or wordlist path")
+        elif preset_id == "6" and not wordlist_path:
+            # Custom preset selected but no path provided
+            raise ValueError("Custom wordlist path is required for preset 6")
     
     # Add passive enumeration results
     if passive:

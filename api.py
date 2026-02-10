@@ -28,7 +28,7 @@ app.add_middleware(
 # Request/Response Models
 class EnumerateRequest(BaseModel):
     domain: str = Field(..., description="Target domain to enumerate")
-    wordlist_preset: str = Field("1", description="Wordlist preset ID (1-6)")
+    wordlist_preset: Optional[str] = Field(None, description="Wordlist preset ID (1-6)")
     custom_wordlist: Optional[str] = Field(None, description="Path to custom wordlist")
     passive: bool = Field(False, description="Enable passive enumeration via crt.sh")
     timeout: float = Field(5.0, description="DNS timeout in seconds", ge=0.1, le=30.0)
@@ -198,7 +198,7 @@ async def websocket_enumerate(websocket: WebSocket):
             await websocket.close()
             return
         
-        wordlist_preset = params.get("wordlist_preset", "1")
+        wordlist_preset = params.get("wordlist_preset")
         custom_wordlist = params.get("custom_wordlist")
         passive = params.get("passive", False)
         timeout = params.get("timeout", 5.0)
