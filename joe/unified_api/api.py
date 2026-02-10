@@ -20,12 +20,14 @@ sys.path.append(os.path.join(parent_dir, "fuzzing-endpoints"))
 
 # Import from passive_url
 try:
-    from main import gospider_passive, filter_urls
+    from main import gospider_passive, filter_urls, wayback, katana_crawl
 except ImportError as e:
     print(f"Error importing from passive_url: {e}")
     # Fallback or mock if needed
     def gospider_passive(domain): return []
-    def filter_urls(urls): return list(urls)
+    def wayback(domain): return []
+    def katana_crawl(domain): return []
+    def filter_urls(urls, strict_domain=None): return list(urls)
 
 # Import from fuzzing-endpoints
 try:
@@ -167,9 +169,14 @@ async def unified_scan(request: UnifiedScanRequest):
     
     print("[*] Starting Passive Discovery...")
     for domain in request.domains:
-        # Run gospider
-        # Note: gospider_passive prints to stdout, we might want to capture or silence it
-        urls = await loop.run_in_executor(None, gospider_passive, domain)
+        urls = set()
+        # Run GoSpider
+        urls.update(await loop.run_in_executor(None, gospider_passive, domain))
+        # Run Wayback
+        urls.update(await loop.run_in_executor(None, wayback, domain))
+        # Run Katana (Disabled - active tool)
+        # urls.update(await loop.run_in_executor(None, katana_crawl, domain))
+        
         clean = await loop.run_in_executor(None, filter_urls, urls, domain)
         passive_urls_map[domain] = clean
 

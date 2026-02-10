@@ -93,9 +93,87 @@ def filter_urls(urls, strict_domain=None):
 
     return sorted(clean)
 
+def find_urless():
+    """Find the path to urless executable."""
+    import shutil
+    import sys
+    import os
+
+    # 1. Check PATH
+    if shutil.which("urless"):
+        return "urless"
+
+    # 2. Check Scripts dir of current python interpreter
+    # Case A: python.exe is in Scripts/ (typical venv on Windows)
+    # Case B: python.exe is not in Scripts/ (system python)
+    
+    python_dir = os.path.dirname(sys.executable)
+    
+    # Check same dir (venv)
+    possible = os.path.join(python_dir, "urless.exe")
+    if os.path.exists(possible): return possible
+    
+    # Check Scripts subdir (system)
+    possible = os.path.join(python_dir, "Scripts", "urless.exe")
+    if os.path.exists(possible): return possible
+    
+    return None
+
+def deduplicate_with_urless(urls):
+    """
+    Deduplicate URLs using 'urless' tool if available.
+    """
+    if not urls:
+        return []
+
+    urless_cmd = find_urless()
+    
+    if not urless_cmd:
+        print("[!] 'urless' tool not found. Skipping deduplication.")
+        # Only print specific help if we are confident about the situation
+        return urls
+
+    try:
+        # Prepare input as string
+        input_data = "\n".join(urls)
+        
+        # Run urless
+        # If we have a full path, use it. If "urless", let shell find it.
+        cmd = [urless_cmd]
+        
+        process = subprocess.Popen(
+            cmd, 
+            stdin=subprocess.PIPE, 
+            stdout=subprocess.PIPE, 
+            stderr=subprocess.PIPE,
+            text=True,
+            shell=True # robust for arguments/environment
+        )
+        stdout, stderr = process.communicate(input=input_data)
+        
+        if process.returncode != 0:
+            print(f"[!] Urless failed with code {process.returncode}")
+            if stderr:
+                print(f"[!] Urless error: {stderr.strip()}")
+            return urls # Fallback
+            
+        return stdout.splitlines()
+
+    except Exception as e:
+        print(f"[!] Error running urless: {e}")
+        return urls
+
 def wayback(domain):
     print(f"[+] Waybackurls -> {domain}")
-    return run_command(["waybackurls", domain], timeout=60)
+    urls = run_command(["waybackurls", domain], timeout=60)
+    
+    # Deduplicate with urless
+    if urls:
+        print(f"    - Found {len(urls)} URLs. Deduplicating with urless...")
+        deduped = deduplicate_with_urless(urls)
+        print(f"    - Reduced to {len(deduped)} URLs.")
+        return deduped
+    return []
 
 def katana_crawl(domain):
     """Katana active crawling with shallow depth (passive mode not supported in this version)."""
@@ -128,8 +206,13 @@ def main():
         print(f"\n[*] Processing {domain}")
         urls = set()
 
-        # urls.update(wayback(domain))  # Disabled - very slow for large domains, often times out
-        # urls.update(katana_crawl(domain))  # Disabled - slow active crawling, can timeout
+        # wayback now returns deduplicated list, but we cast to set
+        urls.update(wayback(domain))
+        
+        # urls.update(katana_crawl(domain)) # Disabled - active tool
+        
+        # gospider urls might also need dedupe if we want global dedupe
+        # but user asked for "wayback itself returns reduced"
         urls.update(gospider_passive(domain))  # Fast and reliable
 
         clean_urls = filter_urls(urls, strict_domain=domain)
