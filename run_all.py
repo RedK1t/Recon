@@ -3,28 +3,49 @@ import os
 import sys
 import signal
 import time
+import socket
 
 # Define the APIs to run
-# Path to script, working directory
+# Path to script, working directory, and port
 APIS = [
     {
         "name": "Subdomain Enumerator API",
         "path": "api.py",
-        "cwd": "."
+        "cwd": ".",
+        "port": 8000
     },
     {
         "name": "Service Ports API",
         "path": "joe/service_ports/api.py",
-        "cwd": "joe/service_ports"
+        "cwd": "joe/service_ports",
+        "port": 9000
     },
     {
         "name": "Unified Recon API",
         "path": "joe/unified_api/api.py",
-        "cwd": "joe/unified_api"
+        "cwd": "joe/unified_api",
+        "port": 8003
     }
 ]
 
 processes = []
+
+def kill_process_on_port(port):
+    """Kill process using a specific port on Windows."""
+    try:
+        # Find PID using the port
+        output = subprocess.check_output(f'netstat -ano | findstr :{port}', shell=True).decode()
+        for line in output.strip().split('\n'):
+            if 'LISTENING' in line:
+                pid = line.strip().split()[-1]
+                print(f"[!] Port {port} is in use by PID {pid}. Killing it...")
+                subprocess.run(f'taskkill /F /PID {pid}', shell=True, capture_output=True)
+                time.sleep(1) # Give it a moment to release the port
+    except subprocess.CalledProcessError:
+        # findstr returns exit code 1 if no matches found
+        pass
+    except Exception as e:
+        print(f"[!] Error killing process on port {port}: {e}")
 
 def signal_handler(sig, frame):
     print("\n[!] Stopping all APIs...")
@@ -45,6 +66,10 @@ def main():
     print("[*] Starting all APIs...")
 
     for api in APIS:
+        # Check and kill any existing process on the port
+        if "port" in api:
+            kill_process_on_port(api["port"])
+
         abs_path = os.path.abspath(os.path.join(base_dir, api["path"]))
         abs_cwd = os.path.abspath(os.path.join(base_dir, api["cwd"]))
         
@@ -60,7 +85,7 @@ def main():
         # Small delay to prevent port binding race conditions
         time.sleep(1)
 
-    print("\n[✔] All APIs are running!")
+    print("\n[+] All APIs are running!")
     print("[*] Press Ctrl+C to stop all services.\n")
 
     # Keep the main script alive and echo output

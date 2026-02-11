@@ -87,7 +87,7 @@ def build_tree(base_url, items):
         "id": str(uuid.uuid4()),
         "url": base_url,
         "method": None,
-        "source": "Active",
+        "source": None,
         "created_at": datetime.now(timezone.utc).isoformat(),
         "children": []
     }
@@ -119,7 +119,7 @@ def build_tree(base_url, items):
                     "id": str(uuid.uuid4()),
                     "url": target_url,
                     "method": None,
-                    "source": "Active",
+                    "source": None,
                     "created_at": datetime.now(timezone.utc).isoformat(),
                     "children": []
                 }
@@ -270,6 +270,7 @@ async def check_endpoint(session, sem, base_url, endpoint, baseline, progress_ca
                         "url": url,
                         "status": r.status,
                         "method": "GET",
+                        "source": "Active",
                         "request": request_str,
                         "response": response_str
                     }
@@ -355,6 +356,7 @@ async def run(subdomains=None, endpoints=None, progress_callback=None):
                     redirect_map[from_domain] = {
                         "status": str(redirect_info["status"]),
                         "method": redirect_info["method"],
+                        "source": "Active",
                         "redirect": to_url,
                         "request": redirect_info["request"],
                         "response": redirect_info["response"]
@@ -416,7 +418,7 @@ async def run(subdomains=None, endpoints=None, progress_callback=None):
                 "url": domain,
                 "children": [],
                 "method": None,
-                "source": "Active",
+                "source": None,
                 "created_at": datetime.now(timezone.utc).isoformat()
             }
              node.update(found_items)

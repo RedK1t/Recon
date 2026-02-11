@@ -95,6 +95,8 @@ async def verify_single_url(session, sem, url):
     async with sem:
         try:
             async with session.get(url, timeout=TIMEOUT, allow_redirects=True) as r:
+                if r.status == 404:
+                    return None
                 # Read body
                 try:
                     body = await r.read()
@@ -161,50 +163,45 @@ async def unified_scan(request: UnifiedScanRequest):
 
     results = []
 
-    # 1. Passive Discovery (using subprocess/tools)
-    # We can run this in executor
+    # 1. Start all discovery tasks in parallel
+    print("[*] Starting Parallel Discovery (Passive + Active)...")
     loop = asyncio.get_event_loop()
     
-    passive_urls_map = {} # domain -> list of urls
+    # Prep Active Fuzzing task
+    normalized_domains = []
+    for d in request.domains:
+        if not d.startswith(("http://", "https://")):
+            normalized_domains.append(f"https://{d}")
+        else:
+            normalized_domains.append(d)
     
-    print("[*] Starting Passive Discovery...")
+    active_task = fuzzing.run(subdomains=normalized_domains, endpoints=request.endpoints)
+    
+    # Prep Passive tasks (gospider and wayback per domain)
+    passive_tasks = []
     for domain in request.domains:
-        urls = set()
-        # Run GoSpider
-        urls.update(await loop.run_in_executor(None, gospider_passive, domain))
-        # Run Wayback
-        urls.update(await loop.run_in_executor(None, wayback, domain))
-        # Run Katana (Disabled - active tool)
-        # urls.update(await loop.run_in_executor(None, katana_crawl, domain))
+        passive_tasks.append(loop.run_in_executor(None, gospider_passive, domain))
+        passive_tasks.append(loop.run_in_executor(None, wayback, domain))
         
+    # Run everything together
+    all_discovery_results = await asyncio.gather(*passive_tasks, active_task)
+    
+    active_results_data = all_discovery_results[-1]
+    passive_raw_results = all_discovery_results[:-1]
+    
+    # Process passive results into map
+    passive_urls_map = {}
+    for i, domain in enumerate(request.domains):
+        urls = set()
+        # i*2 is gospider result, i*2 + 1 is wayback result
+        urls.update(passive_raw_results[i*2])
+        urls.update(passive_raw_results[i*2 + 1])
+        
+        # Filter URLs (still using executor for this utility)
         clean = await loop.run_in_executor(None, filter_urls, urls, domain)
         passive_urls_map[domain] = clean
 
-    # 2. Active Fuzzing & Passive Verification
-    # We use fuzzing.run()'s session logic or create our own session to share
-    
-    # We need to run fuzzing.run() but it's designed to run everything.
-    # We can call fuzzing.run() for Active Fuzzing.
-    # And we need to verify passive URLs.
-    
-    # Let's run fuzzing.run() first to get Active results.
-    # It returns a hierarchical structure.
-    
-    print("[*] Starting Active Fuzzing...")
-    # fuzzing.run expects https://domain usually
-    normalized_domains = []
-    for d in request.domains:
-         if not d.startswith(("http://", "https://")):
-             normalized_domains.append(f"https://{d}")
-         else:
-             normalized_domains.append(d)
-
-    active_results_data = await fuzzing.run(
-        subdomains=normalized_domains,
-        endpoints=request.endpoints
-    )
-    # active_results_data is {"data": [tree_nodes...]}
-    
+    # 2. Active Fuzzing results are already in active_results_data
     # Now verify passive URLs
     print("[*] Verifying Passive URLs...")
     
@@ -248,13 +245,22 @@ async def unified_scan(request: UnifiedScanRequest):
     
     def flatten_tree(node, domain_root):
         # Extract relevant fields
+        method = node.get("method")
+        request = node.get("request")
+        response = node.get("response")
+        source = node.get("source", "Active")
+
+        # Set source to None if no request/response and method is null
+        if method is None and request is None and response is None:
+            source = None
+
         item = {
             "url": node.get("url"),
-            "method": node.get("method"),
-            "source": node.get("source", "Active"),  # Default to Active
+            "method": method,
+            "source": source,
             "status": node.get("status"),
-            "request": node.get("request"),
-            "response": node.get("response")
+            "request": request,
+            "response": response
         }
         # Only add if it has a status (meaning it's a found endpoint, not just a folder node? 
         # Actually folder nodes are created by build_tree. We only want real results.)
@@ -266,7 +272,8 @@ async def unified_scan(request: UnifiedScanRequest):
         # if i == len(segments) - 1: update with item items.
         
         # So essentially, we want all items that have "status" or "request".
-        if node.get("status"):
+        status = node.get("status")
+        if status and status != 404:
             flat_active_items.append(item)
             
         for child in node.get("children", []):
