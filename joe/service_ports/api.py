@@ -3,10 +3,16 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Dict, Any, Optional
 import asyncio
+import os
 import json
 from concurrent.futures import ThreadPoolExecutor
 from main import scan_domain
+from dotenv import load_dotenv
+from pathlib import Path
 
+load_dotenv()
+env_path = Path(__file__).resolve().parent.parent.parent / '.env'
+load_dotenv(dotenv_path=env_path)
 app = FastAPI(title="Service Ports Scanner API")
 
 # Create a custom thread pool for parallel nmap scans
@@ -183,6 +189,6 @@ if __name__ == "__main__":
     uvicorn.run(
         app,
         host="0.0.0.0",
-        port=9000,
+        port=int(os.getenv("SERVICE_PORTS_PORT")),
         log_level="info"
     )

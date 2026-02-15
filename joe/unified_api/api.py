@@ -11,7 +11,12 @@ from typing import List, Optional, Dict, Any
 from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
+from dotenv import load_dotenv
+from pathlib import Path
 
+load_dotenv()
+env_path = Path(__file__).resolve().parent.parent.parent / '.env'
+load_dotenv(dotenv_path=env_path)
 # Add sibling directories to sys.path to allow imports
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
@@ -342,4 +347,4 @@ async def unified_scan(request: UnifiedScanRequest):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8003)
+    uvicorn.run(app, host="0.0.0.0", port=int(os.getenv("UNIFIED_API_PORT")))

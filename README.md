@@ -377,3 +377,13 @@ This project is provided as-is for educational and security research purposes.
 ```bash
 pip freeze > requirements.txt
 ```
+
+# Docker
+
+```bash
+docker build -t recon .
+```
+
+```bash
+docker run --name web -p 3003:3003 -p 3004:3004 -p 3005:3005 recon
+```

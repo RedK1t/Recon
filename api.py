@@ -8,7 +8,13 @@ from typing import List, Optional
 import core
 import json
 import asyncio
+import os
+from dotenv import load_dotenv
+from pathlib import Path
 
+load_dotenv()
+env_path = Path(__file__).resolve().parent.parent.parent / '.env'
+load_dotenv(dotenv_path=env_path)
 app = FastAPI(
     title="Subdomain Enumerator API",
     description="Fast subdomain enumeration API with passive and active scanning",
@@ -313,4 +319,4 @@ async def health_check():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=int(os.getenv('SUB_DOMAIN_PORT')))
