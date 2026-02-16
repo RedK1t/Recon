@@ -21,10 +21,15 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# Configure CORS for React frontend
+# Configure CORS - Read from environment variable
+import os
+cors_origin = os.getenv("CORS_ORIGIN", "*")
+# Support comma-separated origins
+allow_origins = [origin.strip() for origin in cors_origin.split(",")] if cors_origin != "*" else ["*"]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, specify your React app's URL
+    allow_origins=allow_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

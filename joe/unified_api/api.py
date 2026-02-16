@@ -48,10 +48,14 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# CORS validation
+# CORS validation - Read from environment variable
+cors_origin = os.getenv("CORS_ORIGIN", "*")
+# Support comma-separated origins
+allow_origins = [origin.strip() for origin in cors_origin.split(",")] if cors_origin != "*" else ["*"]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=allow_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

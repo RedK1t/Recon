@@ -19,10 +19,14 @@ app = FastAPI(title="Service Ports Scanner API")
 # 10 workers allows up to 10 concurrent scans
 executor = ThreadPoolExecutor(max_workers=10)
 
-# CORS middleware for React app
+# CORS middleware - Read from environment variable
+cors_origin = os.getenv("CORS_ORIGIN", "*")
+# Support comma-separated origins
+allow_origins = [origin.strip() for origin in cors_origin.split(",")] if cors_origin != "*" else ["*"]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, replace with your React app's URL
+    allow_origins=allow_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

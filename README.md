@@ -385,5 +385,5 @@ docker build -t recon .
 ```
 
 ```bash
-docker run --name web -p 3003:3003 -p 3004:3004 -p 3005:3005 recon
+docker run --name rec -p 3003:3003 -p 3004:3004 -p 3005:3005 recon
 ```
