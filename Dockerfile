@@ -19,12 +19,16 @@ RUN wget -q https://go.dev/dl/go1.21.6.linux-amd64.tar.gz && \
 
 # Set Go environment variables
 ENV GOPATH=/root/go
-ENV PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
+ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/go/bin:/root/go/bin"
 
 # Install Go tools needed by the APIs
 RUN go install github.com/tomnomnom/waybackurls@latest && \
     go install github.com/projectdiscovery/katana/cmd/katana@latest && \
-    go install github.com/jaeles-project/gospider@latest
+    go install github.com/jaeles-project/gospider@latest && \
+    ls -la /root/go/bin/ && \
+    waybackurls -h && \
+    gospider -h && \
+    katana -h
 
 # Install dependencies first to leverage Docker cache
 COPY ./requirements.txt /code/requirements.txt
@@ -45,7 +49,9 @@ EXPOSE 3003 3004 3005
 
 ENV SUB_DOMAIN_PORT=3003 \
     SERVICE_PORTS_PORT=3004 \
-    UNIFIED_API_PORT=3005
+    UNIFIED_API_PORT=3005 \
+    CORS_ORIGIN=* \
+    PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/go/bin:/root/go/bin"
 
 # Run Uvicorn directly (standard practice for modern FastAPI)
 CMD ["python", "app/run_all.py"]
