@@ -47,11 +47,9 @@ COPY . /code/app/
 
 EXPOSE 3003 3004 3005
 
-ENV SUB_DOMAIN_PORT=3003 \
-    SERVICE_PORTS_PORT=3004 \
-    UNIFIED_API_PORT=3005 \
-    CORS_ORIGIN=* \
-    PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/go/bin:/root/go/bin"
+# App env vars (SUB_DOMAIN_PORT, SERVICE_PORTS_PORT, UNIFIED_API_PORT, CORS_ORIGIN) are
+# injected from Recon/.env via docker-compose env_file — the single source of truth.
+ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/go/bin:/root/go/bin"
 
 # Run Uvicorn directly (standard practice for modern FastAPI)
 CMD ["python", "app/run_all.py"]
