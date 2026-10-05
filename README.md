@@ -1,4 +1,17 @@
-# Subdomain Enumerator API
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/RedK1t/RedKit/main/docs/assets/logo-light.svg">
+    <img src="https://raw.githubusercontent.com/RedK1t/RedKit/main/docs/assets/logo-dark.svg" alt="RedKit" width="96">
+  </picture>
+</p>
+
+<h1 align="center">RedKit Recon</h1>
+
+<p align="center">Subdomain enumeration, port scanning and endpoint fuzzing APIs.<br>
+Part of <a href="https://github.com/RedK1t/RedKit"><b>RedKit</b></a>, a modular, web-based penetration-testing framework.</p>
+
+---
+
 
 A FastAPI-based REST API for subdomain enumeration with passive and active scanning capabilities.
 Python version: 3.13.7
